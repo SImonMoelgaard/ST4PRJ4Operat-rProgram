@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatoerGUI", "Hvidkål\OperatoerGUI.csproj", "{5B69C26D-D25F-4242-80C9-19B922784378}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatoerLibrary", "ProjectLibrary\OperatoerLibrary.csproj", "{1D7A1052-7BD2-4F85-948E-FE377A7AD00F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatoerProgramTestUnit", "OperatørProgramTestUnit\OperatoerProgramTestUnit.csproj", "{518EA759-2242-4340-92FA-5EFC0CD1FC7D}"
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5B69C26D-D25F-4242-80C9-19B922784378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B69C26D-D25F-4242-80C9-19B922784378}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B69C26D-D25F-4242-80C9-19B922784378}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B69C26D-D25F-4242-80C9-19B922784378}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1D7A1052-7BD2-4F85-948E-FE377A7AD00F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1D7A1052-7BD2-4F85-948E-FE377A7AD00F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D7A1052-7BD2-4F85-948E-FE377A7AD00F}.Release|Any CPU.ActiveCfg = Release|Any CPU
