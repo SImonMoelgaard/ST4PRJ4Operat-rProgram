@@ -3,18 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatoerLibrary", "ProjectLibrary\OperatoerLibrary.csproj", "{1D7A1052-7BD2-4F85-948E-FE377A7AD00F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OperatoerLibrary", "ProjectLibrary\OperatoerLibrary.csproj", "{1D7A1052-7BD2-4F85-948E-FE377A7AD00F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatoerProgramTestUnit", "OperatørProgramTestUnit\OperatoerProgramTestUnit.csproj", "{518EA759-2242-4340-92FA-5EFC0CD1FC7D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{AD1D1E03-0F9E-4F0C-8195-2FBE4ABA75B5} = {AD1D1E03-0F9E-4F0C-8195-2FBE4ABA75B5}
-		{1D7A1052-7BD2-4F85-948E-FE377A7AD00F} = {1D7A1052-7BD2-4F85-948E-FE377A7AD00F}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatoerGUI", "OperatoerGUI\OperatoerGUI.csproj", "{AD1D1E03-0F9E-4F0C-8195-2FBE4ABA75B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OperatoerProgramTestUnit", "OperatørProgramTestUnit\OperatoerProgramTestUnit.csproj", "{518EA759-2242-4340-92FA-5EFC0CD1FC7D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1D7A1052-7BD2-4F85-948E-FE377A7AD00F} = {1D7A1052-7BD2-4F85-948E-FE377A7AD00F}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatoerGUI", "OperatoerGUI\OperatoerGUI.csproj", "{687F39AC-221F-42D1-A1DA-508A0A75BC3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +26,10 @@ Global
 		{518EA759-2242-4340-92FA-5EFC0CD1FC7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{518EA759-2242-4340-92FA-5EFC0CD1FC7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{518EA759-2242-4340-92FA-5EFC0CD1FC7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD1D1E03-0F9E-4F0C-8195-2FBE4ABA75B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD1D1E03-0F9E-4F0C-8195-2FBE4ABA75B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD1D1E03-0F9E-4F0C-8195-2FBE4ABA75B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD1D1E03-0F9E-4F0C-8195-2FBE4ABA75B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{687F39AC-221F-42D1-A1DA-508A0A75BC3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{687F39AC-221F-42D1-A1DA-508A0A75BC3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{687F39AC-221F-42D1-A1DA-508A0A75BC3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{687F39AC-221F-42D1-A1DA-508A0A75BC3C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
