@@ -8,9 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <wpf:CartesianChart Series="{Binding Linechart}" LegendLocation="Right" Margin="451,217,21,20">
-            <wpf:CartesianChart.AxisY>
-                <wpf:Axis Title="Amplitude" LabelFormatter="{Binding YFormatter}" />
-            </wpf:CartesianChart.AxisY>
+            
             <wpf:CartesianChart.AxisX>
                 <wpf:Axis Title="Tid" Labels="{Binding Labels}" />
             </wpf:CartesianChart.AxisX>
