@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using Newtonsoft.Json;
@@ -9,10 +7,10 @@ namespace OperatoerLibrary
 {
     public class UDPSender : IUDPSender
     {
-        private int port = 11000;
         private IPAddress broadCastIP;
-        private Socket socket;
         private IPEndPoint endPointIP;
+        private readonly int port = 11000;
+        private Socket socket;
 
         public void OpenSendPorts()
         {
@@ -25,17 +23,10 @@ namespace OperatoerLibrary
 
         public void SendMeasurementData(DTO_Measurement measurementData)
         {
-            
             var json = JsonConvert.SerializeObject(measurementData);
-            byte[] sendData = Encoding.ASCII.GetBytes(json);
+            var sendData = Encoding.ASCII.GetBytes(json);
 
             socket.SendTo(sendData, endPointIP);
-
         }
-
-
-
-
-
     }
 }

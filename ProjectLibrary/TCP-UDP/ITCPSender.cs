@@ -5,8 +5,5 @@
         string OpenConnection();
         void CloseConnection();
         void SendTreatmentData(string layoutNumber);
-        
-
-
     }
 }

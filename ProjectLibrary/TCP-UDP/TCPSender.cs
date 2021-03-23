@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Net.Sockets;
+using System.Text;
 
 namespace OperatoerLibrary
 {
     public class TCPSender : ITCPSender
     {
-
-        private int port = 13001;
-        private string IP = "xx,xxx,xxxx,xx";
         private TcpClient client;
-        private NetworkStream stream;
+        private readonly string IP = "xx,xxx,xxxx,xx";
         private int layout;
+
+        private readonly int port = 13001;
+        private NetworkStream stream;
 
 
         public string OpenConnection()
@@ -30,20 +30,17 @@ namespace OperatoerLibrary
             {
                 return "Ingen forbindelse";
             }
-            
         }
-        
+
         public void CloseConnection()
         {
             stream.Close();
             client.Close();
-
-
         }
 
         public void SendTreatmentData(string layoutNumber)
         {
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(layoutNumber);
+            var data = Encoding.ASCII.GetBytes(layoutNumber);
             stream.Write(data, 0, data.Length);
         }
     }
