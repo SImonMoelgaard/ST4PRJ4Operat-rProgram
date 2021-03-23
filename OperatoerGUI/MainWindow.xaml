@@ -4,9 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OperatoerGUI"
+        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <wpf:CartesianChart Series="{Binding LinechartSeriesCollection}" LegendLocation="Right" Margin="451,217,21,20" >
+            <wpf:CartesianChart.AxisY>
+                <wpf:Axis Title="Sales" LabelFormatter="{Binding LinechartYFormatter}"></wpf:Axis>
+            </wpf:CartesianChart.AxisY>
+            <wpf:CartesianChart.AxisX>
+                <wpf:Axis Title="Month" Labels="{Binding LinechartLabels}"></wpf:Axis>
+            </wpf:CartesianChart.AxisX>
+        </wpf:CartesianChart>
     </Grid>
 </Window>

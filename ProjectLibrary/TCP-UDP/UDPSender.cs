@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace OperatoerLibrary
 {
-    public class UDPSender
+    public class UDPSender : IUDPSender
     {
         private int port = 11000;
         private IPAddress broadCastIP;
