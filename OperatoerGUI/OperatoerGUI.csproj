@@ -14,4 +14,8 @@
     <ProjectReference Include="..\ProjectLibrary\OperatoerLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>
