@@ -108,7 +108,7 @@ namespace OperatoerGUI
 
         }
 
-        private void read()
+        private void Read()
         {
             while (IsReading)
             {
@@ -120,7 +120,23 @@ namespace OperatoerGUI
                     {
                         //time = ting i dto
                         //Breathdata = ting i DTO
+
+
+
+
                     });
+
+                    if (ChartValues.Count >300)
+                    {
+                        ChartValues.RemoveAt(0);
+                    }
+
+                    //SetAxisLimits(Tid i dto . tid);
+
+
+
+
+
                 }
                 catch (Exception e)
                 {
@@ -128,6 +144,7 @@ namespace OperatoerGUI
                     throw;
                 }
 
+               
 
             }
         }
