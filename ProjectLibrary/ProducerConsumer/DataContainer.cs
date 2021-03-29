@@ -7,5 +7,7 @@ namespace OperatoerLibrary.ProducerConsumer
    public  class DataContainer
     {
         public double Sample { get; set; }
+
+        
     }
 }
