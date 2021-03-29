@@ -8,15 +8,24 @@ namespace OperatoerLibrary.Filters
     {
         
 
-        public double baseLineFilter(DTO_Measurement dtodata)
+        public double baseLineFilter(List<DTO_Measurement> measurementList)
         {
-            double gatingvalue = 0;
+            double baseline = 0;
+
+            foreach (var sample in measurementList)
+            {
+                if (sample )
+                {
+                    
+                }
+            }
 
 
 
 
 
-            return gatingvalue;
+
+            return baseline;
         }
 
 
