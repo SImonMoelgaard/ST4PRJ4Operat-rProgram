@@ -22,7 +22,7 @@ namespace OperatoerLibrary
 
 
 
-
+            //Sætter målingerne i list, så vi er klar til baselinevalue
             baseLineList.Add(BreathingValue);
             if (baseLineList.Count >90)
             {
