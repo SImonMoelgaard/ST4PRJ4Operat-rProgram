@@ -27,6 +27,7 @@ namespace OperatoerLibrary.ProducerConsumer
             
         }
 
+
         public void GetOneBreathingValue()
         {
             BreathingValuesDataContainer breathingValuesDataContainer = new BreathingValuesDataContainer();
