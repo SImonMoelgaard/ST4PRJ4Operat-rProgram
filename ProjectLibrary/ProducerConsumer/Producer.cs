@@ -9,6 +9,8 @@ namespace OperatoerLibrary.ProducerConsumer
     {
         private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData;
         private const int sampletime = 33;
+       
+
 
         public Producer(BlockingCollection<BreathingValuesDataContainer> breathingData)
         {
@@ -29,6 +31,13 @@ namespace OperatoerLibrary.ProducerConsumer
         {
             BreathingValuesDataContainer breathingValuesDataContainer = new BreathingValuesDataContainer();
             _breathingData.Add(breathingValuesDataContainer);
+
+
+
+
+
+            
+
         }
     }
 }
