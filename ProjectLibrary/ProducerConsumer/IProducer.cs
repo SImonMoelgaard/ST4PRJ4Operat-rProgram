@@ -4,8 +4,10 @@ using System.Text;
 
 namespace OperatoerLibrary.ProducerConsumer
 {
-   public  class DataContainer
+    public interface IProducer
     {
-        public double Sample { get; set; }
+        public void Run();
+
+        public void GetOneBreathingValue();
     }
 }
