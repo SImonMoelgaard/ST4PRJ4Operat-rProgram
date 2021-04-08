@@ -14,10 +14,7 @@ namespace OperatoerLibrary.Filters
 
             foreach (var sample in measurementList)
             {
-                if (sample )
-                {
-                    
-                }
+                
             }
 
 
