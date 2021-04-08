@@ -1,16 +1,25 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Transactions;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
+using OperatoerLibrary;
 using OperatoerLibrary.DTO;
+using OperatoerLibrary.ProducerConsumer;
+
+
 
 namespace OperatoerGUI
 {
@@ -20,134 +29,177 @@ namespace OperatoerGUI
     public partial class MainWindow : Window
     {
 
-        public ChartValues<ChartModel> ChartValues { get; set; }
+
+        private double axisMax;
+        private double axisMin;
+        //private double yAxisMax;
+        //private double yAxisMin;
+
+        public Func<double, string> DateTimeFormatter { get; set; }
+
+        public double AxisStep { get; set; }
+        public double AxisUnit { get; set; }
+
+        public ChartValues<MeasurementModel> ChartValues { get; set; }
+
+        public bool IsReading { get; set; }
+
+         //BlockingCollection<BreathingValuesDataContainer> _datacollection = new BlockingCollection<BreathingValuesDataContainer>();
+         
+         
+        
+         public event PropertyChangedEventHandler PropertyChanged;
+         
+         
+
+         private List<DTO_Measurement> data;
+       private  Controller cr = new Controller(null);
 
         public MainWindow()
         {
             InitializeComponent();
+        //IProducer producer = new Producer(_datacollection);
 
-          
+        //     producer = new Producer(_datacollection);
+        //    producer.GetOneBreathingValue();
+
+        //    BreathingValuesDataContainer container = _datacollection.Take();
 
             
-            Linechart();
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        public ChartValues<LineDataModel> LinedataValues { get; set; }
-        public Func<double, string> DateTimeFormatter { get; set; }
-        public SeriesCollection SeriesCollection { get; set; }
-        public double AxisStep { get; set; }
-        public double AxisUnit { get; set; }
-        private double xAxisMax;
-        private double xAxisMin;
-        private double yAxisMax;
-        private double yAxisMin;
-        public bool IsReading { get; set; }
+        var mapper = Mappers.Xy<MeasurementModel>()
+            .X(model => model.Time.Ticks)
+            .Y(model => model.RawData);
 
-        public double XAxisMax
-        {
-            get { return xAxisMax; }
-            set
-            {
-                xAxisMax = value;
-                propertyChanged("XAxisMax");
-
-            }
-        }
-        public double XAxisMin
-        {
-            get { return XAxisMin; }
-            set
-            {
-                xAxisMin = value;
-                propertyChanged("XAxisMin");
-
-            }
-        }
-
-
-        protected virtual void propertyChanged(string propertyName = null)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-        public string[] Labels { get; set; }
-
-        private void Linechart()
-        {
-
-            var mapper = Mappers.Xy<ChartModel>()
-                .X(model => model.time.Ticks)
-                .Y(model => model.breathData);
-
-            Charting.For<ChartModel>(mapper);
+        Charting.For<MeasurementModel>(mapper);
 
 
            
-            ChartValues = new ChartValues<ChartModel>();
+        ChartValues = new ChartValues<MeasurementModel>();
+           
 
-            DateTimeFormatter = value => new DateTime((long) value).ToString("mm:ss:ms");
-
-
-            AxisStep = TimeSpan.FromSeconds(1).Ticks;
-            AxisUnit = TimeSpan.TicksPerSecond;
+        DateTimeFormatter = value => new DateTime((long) value).ToString("mm:ss:ms");
 
 
+        AxisStep = TimeSpan.FromSeconds(1).Ticks;
 
+        AxisUnit = TimeSpan.TicksPerSecond;
 
+        SetAxisLimits(DateTime.Now);
 
-            DataContext = this;
-
+        IsReading = false;
+            
+        DataContext = this;
         }
-
-        private void SetAxisLimits(DateTime now)
+        
+        public double AxisMax
         {
-            xAxisMax = now.Ticks + TimeSpan.FromSeconds(0).Ticks;
-            xAxisMin = now.Ticks - TimeSpan.FromSeconds(5).Ticks;
-
+            get { return axisMax; }
+            set
+            {
+                axisMax = value;
+                OnPropertyChanged("AxisMax");
+            }
         }
 
+        /// <summary>
+        /// Y Axis Minimum
+        /// </summary>
+        public double AxisMin
+        {
+            get { return axisMin; }
+            set
+            {
+                axisMin = value;
+                OnPropertyChanged("AxisMin");
+            }
+        }
+
+
+
+      
         private void Read()
         {
             while (IsReading)
             {
-
-
+                data = new List<DTO_Measurement>();
+                data = cr.getdata();
+                 //Metode der kaldes for at få data fra køen
+                
+                
                 try
                 {
-                    ChartValues.Add(new ChartModel
+
+                    foreach (var VARIABLE in data)
                     {
-                        //time = ting i dto
-                        //Breathdata = ting i DTO
+                        ChartValues.Add(new MeasurementModel
+                        {
+                            //time = ting i dto
+                            //Breathdata = ting i DTO
+                        
+                            Time = VARIABLE.Time,
+                            RawData = VARIABLE.MeasurementData
 
 
 
+                        });
+                        
+                        SetAxisLimits(VARIABLE.Time);
 
-                    });
 
-                    if (ChartValues.Count >300)
-                    {
-                        ChartValues.RemoveAt(0);
+                        if (ChartValues.Count > 500)
+                        {
+                            ChartValues.RemoveAt(0);
+                        }
+
+
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            ID_TB.Text = Convert.ToString(VARIABLE.Time);
+                            
+                        });
+                        
+                        
                     }
+                   
 
-                    //SetAxisLimits(Tid i dto . tid);
-
+                    
 
 
 
 
                 }
-                catch (Exception e)
+                catch (InvalidExpressionException)
                 {
-                    Console.WriteLine(e);
-                    throw;
+                   
                 }
 
                
 
             }
         }
+
+
+        private void SetAxisLimits(DateTime now)
+        {
+            AxisMax = now.Ticks + TimeSpan.FromSeconds(-2).Ticks;
+            AxisMin = now.Ticks - TimeSpan.FromSeconds(5).Ticks;
+
+        }
+
+
+
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+
+        
+
+       
+
+      
 
         private void testknap_Click(object sender, RoutedEventArgs e)
         {
@@ -171,6 +223,27 @@ namespace OperatoerGUI
         }
 
         private void ScaleDown_b_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Start_b_Click(object sender, RoutedEventArgs e)
+        {
+            IsReading = !IsReading;
+            if (IsReading) Task.Factory.StartNew(Read);
+        }
+
+        private void MeasurementChart_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void MeasurementChart_UpdaterTick(object sender)
+        {
+
+        }
+
+        private void MeasurementChart_Loaded_1(object sender, RoutedEventArgs e)
         {
 
         }

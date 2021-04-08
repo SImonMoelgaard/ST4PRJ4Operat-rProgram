@@ -3,58 +3,50 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:OperatoerGUI"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MeasurementWindow" Height="450" Width="800">
 
-    <Grid Background="White">
-        <wpf:CartesianChart AnimationsSpeed="0:0:0.5" Hoverable="False" DataTooltip="{x:Null}" Name="MeasurementChart" Margin="269,184,10,21">
+    <Grid >
+        <lvc:CartesianChart AnimationsSpeed="0:0:0.5" Hoverable="False" DataTooltip="{x:Null}" Name="MeasurementChart" Margin="269,184,10,21">
 
-            <wpf:CartesianChart.Series>
-                <wpf:LineSeries Values="{Binding ChartValues}" 
+            <lvc:CartesianChart.Series>
+                <lvc:LineSeries Values="{Binding ChartValues}" 
                                 PointGeometry="{x:Null}"
                                 Fill="Transparent"
-                                Stroke="Red" Height="3" RenderTransformOrigin="0.5,0.5" Width="33">
-                    <wpf:LineSeries.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="-1"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </wpf:LineSeries.RenderTransform>
-                </wpf:LineSeries>
-            </wpf:CartesianChart.Series>
-            <wpf:CartesianChart.AxisX>
+                                Stroke="Red"/>
+            </lvc:CartesianChart.Series>
+            <lvc:CartesianChart.AxisX>
 
-                <wpf:Axis LabelFormatter="{Binding DateTimeFormatter}" 
-                          MaxValue="{Binding XAxisMax}" 
-                          MinValue="{Binding XAxisMin}"
+                <lvc:Axis LabelFormatter="{Binding DateTimeFormatter}" 
+                          MaxValue="{Binding AxisMax}" 
+                          MinValue="{Binding AxisMin}"
                           Unit="{Binding AxisUnit}"
-                          Foreground="Black">
-                    <wpf:Axis.Separator>
-                        <wpf:Separator Step="{Binding AxisStep}" Stroke="Black"/>
+                          Foreground="Black"> 
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Step="{Binding AxisStep}" Stroke="Black"/>
 
-                    </wpf:Axis.Separator>
-                </wpf:Axis>
-            </wpf:CartesianChart.AxisX>
-            <wpf:CartesianChart.AxisY>
-                <wpf:Axis MinValue="50" MaxValue="200">
-                    <wpf:Axis.Separator>
-                        <wpf:Separator Stroke="Black"/>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis MinValue="50" MaxValue="200">
+                    <lvc:Axis.Separator>
+                        <lvc:Separator Stroke="Black"/>
 
-                    </wpf:Axis.Separator>
-                </wpf:Axis>
-            </wpf:CartesianChart.AxisY>
-        </wpf:CartesianChart>
+                    </lvc:Axis.Separator>
+                </lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
         <Rectangle HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="338" Margin="-86,0,0,0"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Start_b" Content="Button" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="Start_b_Click"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="55,8,0,0" VerticalAlignment="Top"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="100,8,0,0" VerticalAlignment="Top"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="145,8,0,0" VerticalAlignment="Top"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="191,8,0,0" VerticalAlignment="Top"/>
         <Rectangle HorizontalAlignment="Left" Height="148" Margin="0,36,0,0" Stroke="Black" VerticalAlignment="Top" Width="252"/>
-        <TextBox HorizontalAlignment="Left" Margin="54,53,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="157"/>
+        <TextBox x:Name="ID_TB" HorizontalAlignment="Left" Margin="54,53,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="157"/>
         <TextBox HorizontalAlignment="Left" Margin="55,76,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
         <TextBox HorizontalAlignment="Left" Margin="55,99,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>
         <TextBox HorizontalAlignment="Left" Margin="55,122,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="156"/>

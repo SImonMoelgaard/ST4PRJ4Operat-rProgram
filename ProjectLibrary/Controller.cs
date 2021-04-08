@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using OperatoerLibrary.ProducerConsumer;
 
@@ -9,6 +10,8 @@ namespace OperatoerLibrary
         private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData;
         public double BreathingValue { get; set; }
         public List<double> baseLineList = new List<double>();
+        private List<DTO_Measurement> measurementdata;
+        
 
         public Controller(BlockingCollection<BreathingValuesDataContainer> breathingData)
         {
@@ -30,6 +33,25 @@ namespace OperatoerLibrary
             }
 
         }
+
+        private DateTime time;
+        private double i;
+        public List<DTO_Measurement> getdata()
+        {
+            measurementdata = new List<DTO_Measurement>();
+            i++;
+            time = new DateTime();
+            measurementdata.Add(new DTO_Measurement(i, 200, 250, DateTime.Now));
+           
+
+            
+            return measurementdata;
+        }
+
+
+        
+
+
     }
 
 }
