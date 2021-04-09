@@ -6,6 +6,6 @@ namespace OperatoerLibrary.ProducerConsumer
 {
    public  class BreathingValuesDataContainer
     {
-        public double BreathingSample { get; set; }
+        public List<double> BreathingSample { get; set; }
     }
 }

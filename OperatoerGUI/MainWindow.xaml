@@ -9,20 +9,45 @@
         Title="MeasurementWindow" Height="450" Width="800">
 
     <Grid >
-        <lvc:CartesianChart AnimationsSpeed="0:0:0.5" Hoverable="False" DataTooltip="{x:Null}" Name="MeasurementChart" Margin="269,184,10,21">
 
+
+
+        <lvc:CartesianChart AnimationsSpeed ="0:0:0:5" Name="MeasurementChart" Margin="257,184,10,16" RenderTransformOrigin="0.223,0.102">
+
+           
+           
+
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis MinValue ="-20000" MaxValue="20000"></lvc:Axis>
+                <lvc:Axis Foreground="DodgerBlue" Title="Blue Axis"/>
+                <lvc:Axis >
+                    
+                    
+                </lvc:Axis>
+                
+            </lvc:CartesianChart.AxisY>
+
+            
+            
             <lvc:CartesianChart.Series>
+                
                 <lvc:LineSeries Values="{Binding ChartValues}" 
                                 PointGeometry="{x:Null}"
                                 Fill="Transparent"
                                 Stroke="Red"/>
+                
+               
             </lvc:CartesianChart.Series>
+
+            
             <lvc:CartesianChart.AxisX>
 
                 <lvc:Axis LabelFormatter="{Binding DateTimeFormatter}" 
-                          MaxValue="{Binding AxisMax}" 
-                          MinValue="{Binding AxisMin}"
+                          
+                          
                           Unit="{Binding AxisUnit}"
+                          MaxValue="{Binding AxisMax}"
+                          MinValue="{Binding AxisMin}"
                           Foreground="Black"> 
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="{Binding AxisStep}" Stroke="Black"/>
@@ -30,15 +55,13 @@
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis MinValue="50" MaxValue="200">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Stroke="Black"/>
 
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
+
+
         </lvc:CartesianChart>
+
+
+
         <Rectangle HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="338" Margin="-86,0,0,0"/>
         <Button x:Name="Start_b" Content="Button" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="Start_b_Click"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="55,8,0,0" VerticalAlignment="Top"/>
@@ -66,7 +89,6 @@
         <Button Content="Button" HorizontalAlignment="Left" Margin="145,319,0,0" VerticalAlignment="Top" Width="56"/>
         <TextBox HorizontalAlignment="Left" Margin="145,366,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="56"/>
         <Label Content="Radiation time left:" HorizontalAlignment="Left" Margin="17,362,0,0" VerticalAlignment="Top"/>
-        <Rectangle HorizontalAlignment="Left" Height="169" Margin="269,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="521"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="52,150,0,0" VerticalAlignment="Top" Width="58"/>
         <Button Content="Button" HorizontalAlignment="Left" Margin="156,150,0,0" VerticalAlignment="Top" Width="55"/>
     </Grid>

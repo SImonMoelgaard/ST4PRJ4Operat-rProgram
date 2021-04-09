@@ -30,6 +30,11 @@
             MainWindow
             </summary>
         </member>
+        <member name="F:OperatoerGUI.MainWindow.axisMax">
+            <summary>
+            Chart Axis
+            </summary>
+        </member>
         <member name="P:OperatoerGUI.MainWindow.AxisMin">
             <summary>
             Y Axis Minimum

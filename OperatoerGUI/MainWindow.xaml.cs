@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -29,7 +31,9 @@ namespace OperatoerGUI
     public partial class MainWindow : Window
     {
 
-
+        /// <summary>
+        /// Chart Axis
+        /// </summary>
         private double axisMax;
         private double axisMin;
         //private double yAxisMax;
@@ -41,8 +45,10 @@ namespace OperatoerGUI
         public double AxisUnit { get; set; }
 
         public ChartValues<MeasurementModel> ChartValues { get; set; }
-
+        private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData = new BlockingCollection<BreathingValuesDataContainer>();
         public bool IsReading { get; set; }
+
+       
 
          //BlockingCollection<BreathingValuesDataContainer> _datacollection = new BlockingCollection<BreathingValuesDataContainer>();
          
@@ -53,8 +59,9 @@ namespace OperatoerGUI
          
 
          private List<DTO_Measurement> data;
-       private  Controller cr = new Controller(null);
-
+         private Controller cr;
+      
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -64,7 +71,8 @@ namespace OperatoerGUI
         //    producer.GetOneBreathingValue();
 
         //    BreathingValuesDataContainer container = _datacollection.Take();
-
+        
+            cr = new Controller(_breathingData);
             
         var mapper = Mappers.Xy<MeasurementModel>()
             .X(model => model.Time.Ticks)
@@ -77,7 +85,7 @@ namespace OperatoerGUI
         ChartValues = new ChartValues<MeasurementModel>();
            
 
-        DateTimeFormatter = value => new DateTime((long) value).ToString("mm:ss:ms");
+        DateTimeFormatter = value => new DateTime((long) value).ToString("hh:mm:ss:ms");
 
 
         AxisStep = TimeSpan.FromSeconds(1).Ticks;
@@ -87,9 +95,15 @@ namespace OperatoerGUI
         SetAxisLimits(DateTime.Now);
 
         IsReading = false;
-            
+        
+
         DataContext = this;
+
+
+     
         }
+
+        
         
         public double AxisMax
         {
@@ -116,37 +130,45 @@ namespace OperatoerGUI
 
 
 
-      
+        private List<double> value;
+       
         private void Read()
         {
+           cr.loaddata();
+
+           
             while (IsReading)
             {
-                data = new List<DTO_Measurement>();
-                data = cr.getdata();
-                 //Metode der kaldes for at få data fra køen
-                
-                
+
+
                 try
                 {
-
-                    foreach (var VARIABLE in data)
+                    BreathingValuesDataContainer data  = _breathingData.Take();
+                    value = data.BreathingSample;
+                    
+                    
+                    //Metode der kaldes for at få data fra køen
+                
+                    
+                    foreach (var VARIABLE in value)
                     {
                         ChartValues.Add(new MeasurementModel
                         {
                             //time = ting i dto
                             //Breathdata = ting i DTO
-                        
-                            Time = VARIABLE.Time,
-                            RawData = VARIABLE.MeasurementData
+
+                            Time = DateTime.Now,
+                            RawData = VARIABLE
+
 
 
 
                         });
-                        
-                        SetAxisLimits(VARIABLE.Time);
+
+                        SetAxisLimits(DateTime.Now);
 
 
-                        if (ChartValues.Count > 500)
+                        if (ChartValues.Count > 50000)
                         {
                             ChartValues.RemoveAt(0);
                         }
@@ -154,24 +176,57 @@ namespace OperatoerGUI
 
                         this.Dispatcher.Invoke(() =>
                         {
-                            ID_TB.Text = Convert.ToString(VARIABLE.Time);
-                            
+                            ID_TB.Text = Convert.ToString(DateTime.Now);
+
                         });
-                        
-                        
+                        Thread.Sleep(5);
                     }
+
                    
 
-                    
-
-
-
-
                 }
-                catch (InvalidExpressionException)
+                catch (Exception e)
                 {
-                   
+                    Console.WriteLine(e);
+                    throw;
                 }
+                data = new List<DTO_Measurement>();
+                //data = cr.getdata();
+                
+               
+                    //foreach (var VARIABLE in data)
+                    //{
+                    //    ChartValues.Add(new MeasurementModel
+                    //    {
+                    //        //time = ting i dto
+                    //        //Breathdata = ting i DTO
+
+                    //        Time = VARIABLE.Time,
+                    //        RawData = VARIABLE.MeasurementData
+
+
+
+
+                    //    });
+
+
+                    //    SetAxisLimits(VARIABLE.Time);
+
+                    //    if (ChartValues.Count > 500)
+                    //    {
+                    //        ChartValues.RemoveAt(0);
+                    //    }
+
+
+                    //    this.Dispatcher.Invoke(() =>
+                    //    {
+                    //        ID_TB.Text = Convert.ToString(VARIABLE.Time);
+
+                    //    });
+                    //    Thread.Sleep(33);
+
+                 
+                
 
                
 
@@ -181,8 +236,8 @@ namespace OperatoerGUI
 
         private void SetAxisLimits(DateTime now)
         {
-            AxisMax = now.Ticks + TimeSpan.FromSeconds(-2).Ticks;
-            AxisMin = now.Ticks - TimeSpan.FromSeconds(5).Ticks;
+            AxisMax = now.Ticks + TimeSpan.FromSeconds(0).Ticks; // lets force the axis to be 0 second ahead
+            AxisMin = now.Ticks - TimeSpan.FromSeconds(10).Ticks; // and 4 seconds behind
 
         }
 
@@ -195,7 +250,7 @@ namespace OperatoerGUI
         }
         
 
-        
+       
 
        
 

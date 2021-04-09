@@ -7,21 +7,23 @@ namespace OperatoerLibrary
 {
     public class Controller
     {
-        private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData;
+        
         public double BreathingValue { get; set; }
         public List<double> baseLineList = new List<double>();
         private List<DTO_Measurement> measurementdata;
-        
+        private IProducer producer;
+        private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData;
 
-        public Controller(BlockingCollection<BreathingValuesDataContainer> breathingData)
+        public Controller(BlockingCollection<BreathingValuesDataContainer> datacontainer)
         {
-            _breathingData = breathingData;
+            _breathingData = datacontainer; 
+          producer = new Producer(_breathingData);
         }
 
         public void Start()
         {
-            BreathingValuesDataContainer breathingBreathingValuesDataContainer = _breathingData.Take();
-            BreathingValue = breathingBreathingValuesDataContainer.BreathingSample;
+            //BreathingValuesDataContainer breathingBreathingValuesDataContainer = _breathingData.Take();
+            //BreathingValue = breathingBreathingValuesDataContainer.BreathingSample;
 
 
 
@@ -41,11 +43,25 @@ namespace OperatoerLibrary
             measurementdata = new List<DTO_Measurement>();
             i++;
             time = new DateTime();
-            measurementdata.Add(new DTO_Measurement(i, 200, 250, DateTime.Now));
+            measurementdata.Add(new DTO_Measurement(220, 200, 250, DateTime.Now.ToLocalTime()));
            
 
             
             return measurementdata;
+        }
+
+        public void loaddata()
+        {
+             producer.GetOneBreathingValue();
+
+        }
+        public double ReadFile(string test)
+        {
+            double dataraw = 0;
+            //dataraw = producer.GetOneBreathingValue();
+
+           
+            return dataraw;
         }
 
 

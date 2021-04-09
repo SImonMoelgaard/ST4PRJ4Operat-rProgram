@@ -14,6 +14,8 @@ namespace OperatoerLibrary.ProducerConsumer
         private string dataRead;
         private string data;
         private string[] dataList;
+        public List<double> BreathingSamples = new List<double>();
+        private BreathingValuesDataContainer datacontainer;
 
         public Producer(BlockingCollection<BreathingValuesDataContainer> breathingData)
         {
@@ -22,11 +24,10 @@ namespace OperatoerLibrary.ProducerConsumer
 
         public void Run()
         {
-            //while (true)
-            //{
+            
                 GetOneBreathingValue();
                 //Tilføj tråd   
-            //}
+            
             
         }
 
@@ -45,20 +46,27 @@ namespace OperatoerLibrary.ProducerConsumer
 
             }
 
+        
+
+
 
             foreach (var VARIABLE in dataList)
             {
                 
-                double sample = Convert.ToDouble(VARIABLE);
-                BreathingValuesDataContainer breathingValuesDataContainer = new BreathingValuesDataContainer{BreathingSample =sample};
+               var sample = Convert.ToDouble(VARIABLE);
+               BreathingSamples.Add(sample);
+               datacontainer = new BreathingValuesDataContainer
+                   {BreathingSample = BreathingSamples};
 
-                _breathingData.Add(breathingValuesDataContainer);
-                Thread.Sleep(sampletime);
+
+
             }
+            _breathingData.Add(datacontainer);
 
+           
             //for (int i = 0; i < data.Length; i++)
             //{
-                
+
             //    string samplestring = data[i];
             //    double sample = Convert.ToDouble(samplestring);
             //    BreathingValuesDataContainer breathingValuesDataContainer = new BreathingValuesDataContainer{BreathingSample = Convert.ToDouble(sample)};
@@ -67,25 +75,9 @@ namespace OperatoerLibrary.ProducerConsumer
             //    Thread.Sleep(sampletime);
 
             //}
-            
-            
-            
-            
-
-
-            
-
-            
-
-            
-
-
-
-
-
-
-            
 
         }
+
+        
     }
 }
