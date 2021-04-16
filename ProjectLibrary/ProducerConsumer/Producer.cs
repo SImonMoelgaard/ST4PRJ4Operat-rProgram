@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -35,7 +37,7 @@ namespace OperatoerLibrary.ProducerConsumer
         public void GetOneBreathingValue()
         {
 
-            string log = "Respiration.txt";
+            string log = "DIBH.txt";
             
 
             if (File.Exists(log))
@@ -46,24 +48,26 @@ namespace OperatoerLibrary.ProducerConsumer
 
             }
 
-        
-
-
 
             foreach (var VARIABLE in dataList)
             {
-                
-               var sample = Convert.ToDouble(VARIABLE);
-               BreathingSamples.Add(sample);
-               datacontainer = new BreathingValuesDataContainer
-                   {BreathingSample = BreathingSamples};
+                string data = VARIABLE.Replace("0\r\n", string.Empty);
+               if (data.Length >= 7)
+               {
+                   var sample = decimal.Parse(data, CultureInfo.InvariantCulture);
+                   
+                   BreathingSamples.Add(Convert.ToDouble(sample));
+                   datacontainer = new BreathingValuesDataContainer
+                       {BreathingSample = BreathingSamples};
+               }
+               
 
 
 
             }
             _breathingData.Add(datacontainer);
 
-           
+            
             //for (int i = 0; i < data.Length; i++)
             //{
 

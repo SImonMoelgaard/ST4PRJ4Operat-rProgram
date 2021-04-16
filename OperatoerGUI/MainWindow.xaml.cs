@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -48,7 +49,11 @@ namespace OperatoerGUI
         private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData = new BlockingCollection<BreathingValuesDataContainer>();
         public bool IsReading { get; set; }
 
-       
+        private DTO_Measurement DTO_Send;
+
+        private double UpperGatingValue = -18, LowerGatingValue = -18.3;
+        private double UpperGatingValueAdjusted = 0, LowerGatingValueAdjusted = 0;
+        private double baseLine = 0;
 
          //BlockingCollection<BreathingValuesDataContainer> _datacollection = new BlockingCollection<BreathingValuesDataContainer>();
          
@@ -96,6 +101,11 @@ namespace OperatoerGUI
 
         IsReading = false;
         
+            cr.OpenPorts();
+
+
+            
+
 
         DataContext = this;
 
@@ -135,10 +145,13 @@ namespace OperatoerGUI
         private void Read()
         {
            cr.loaddata();
-
+        // Indlæser bare filen
            
             while (IsReading)
             {
+                
+
+
 
 
                 try
@@ -152,13 +165,22 @@ namespace OperatoerGUI
                     
                     foreach (var VARIABLE in value)
                     {
+
+                        double dataPoint = cr.AdjustBaseLine(VARIABLE);
+
+                        DTO_Send = new DTO_Measurement(dataPoint, LowerGatingValueAdjusted, UpperGatingValueAdjusted, DateTime.Now);
+                        //Husk at ændre til rigtige gating værdier
+                        cr.SendMeasurement(DTO_Send);
+
+
+
                         ChartValues.Add(new MeasurementModel
                         {
                             //time = ting i dto
                             //Breathdata = ting i DTO
 
                             Time = DateTime.Now,
-                            RawData = VARIABLE
+                            RawData = dataPoint
 
 
 
@@ -168,7 +190,7 @@ namespace OperatoerGUI
                         SetAxisLimits(DateTime.Now);
 
 
-                        if (ChartValues.Count > 50000)
+                        if (ChartValues.Count > 500)
                         {
                             ChartValues.RemoveAt(0);
                         }
@@ -176,10 +198,12 @@ namespace OperatoerGUI
 
                         this.Dispatcher.Invoke(() =>
                         {
-                            ID_TB.Text = Convert.ToString(DateTime.Now);
+                            Clock_TB.Text = Convert.ToString(DateTime.Now);
+                            Showdata_TB.Text = Convert.ToString(dataPoint);
+
 
                         });
-                        Thread.Sleep(5);
+                        Thread.Sleep(40);
                     }
 
                    
@@ -190,45 +214,9 @@ namespace OperatoerGUI
                     Console.WriteLine(e);
                     throw;
                 }
-                data = new List<DTO_Measurement>();
-                //data = cr.getdata();
-                
-               
-                    //foreach (var VARIABLE in data)
-                    //{
-                    //    ChartValues.Add(new MeasurementModel
-                    //    {
-                    //        //time = ting i dto
-                    //        //Breathdata = ting i DTO
-
-                    //        Time = VARIABLE.Time,
-                    //        RawData = VARIABLE.MeasurementData
-
-
-
-
-                    //    });
-
-
-                    //    SetAxisLimits(VARIABLE.Time);
-
-                    //    if (ChartValues.Count > 500)
-                    //    {
-                    //        ChartValues.RemoveAt(0);
-                    //    }
-
-
-                    //    this.Dispatcher.Invoke(() =>
-                    //    {
-                    //        ID_TB.Text = Convert.ToString(VARIABLE.Time);
-
-                    //    });
-                    //    Thread.Sleep(33);
-
-                 
                 
 
-               
+
 
             }
         }
@@ -285,7 +273,6 @@ namespace OperatoerGUI
         private void Start_b_Click(object sender, RoutedEventArgs e)
         {
             IsReading = !IsReading;
-            if (IsReading) Task.Factory.StartNew(Read);
         }
 
         private void MeasurementChart_Loaded(object sender, RoutedEventArgs e)
@@ -300,6 +287,58 @@ namespace OperatoerGUI
 
         private void MeasurementChart_Loaded_1(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void Adjust_b_Click(object sender, RoutedEventArgs e)
+        {
+           baseLine = cr.AdjustBaseLine();
+           AdjustGatingValues();
+
+        }
+
+        private void Connect_B_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = PatientGUI_CB.Text;
+            int guiType = 1;
+            if (selected == "Standard") { guiType = 1; }
+            else if (selected == "Jul") { guiType = 2;}
+            
+
+
+
+            cr.SendGUIInfo(guiType);
+        }
+
+        private void Stop_b_Click(object sender, RoutedEventArgs e)
+        {
+            IsReading = false;
+            if (!IsReading) Task.Factory.StartNew(Read);
+        }
+
+        private void AdjustGatingValues()
+        {
+            UpperGatingValueAdjusted = UpperGatingValue - baseLine;
+            LowerGatingValueAdjusted = LowerGatingValue - baseLine;
+        }
+
+
+        private void GatingValueConfirm_b_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (Gatingvalueupper_TB.Text != null && GatingValueLower_TB.Text != null)
+            {
+                UpperGatingValue = Convert.ToDouble(Gatingvalueupper_TB.Text);
+                LowerGatingValue = Convert.ToDouble(GatingValueLower_TB.Text);
+                AdjustGatingValues();
+
+            }
+
+
+
+
+
+
 
         }
     }

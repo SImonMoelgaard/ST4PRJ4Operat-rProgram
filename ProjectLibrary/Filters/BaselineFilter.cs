@@ -5,20 +5,21 @@ using System.Text;
 
 namespace OperatoerLibrary.Filters
 {
-    public class BaselineFilter
+    public class BaselineFilter : IBaseLineFilter
     {
+        private List<double> baseLineAdjustList = new List<double>();
         private List<double> pointstaken = new List<double>();
         private List<double> baselineValues = new List<double>();
         private int goingdown;
         private double lastnumber = 0;
-        private double baseLineValue;
+        private double baseLineValue = 0;
 
-        public void GetBaseLineValue(List<DTO_Measurement> measurementlist)
+        public double AdjustBaseLineValue()
         {
-            foreach (var data in measurementlist)
+            foreach (var data in baseLineAdjustList)
             {
-                pointstaken.Add(data.MeasurementData);
-                if (data.MeasurementData < lastnumber)
+                pointstaken.Add(data);
+                if (data < lastnumber)
                 {
                     goingdown++;
 
@@ -34,12 +35,13 @@ namespace OperatoerLibrary.Filters
                 }
 
                 
-                lastnumber = data.MeasurementData;
+                lastnumber = data;
             }
 
             CalculateBaseLineValue(baselineValues);
 
 
+            return baseLineValue;
         }
 
         public void CalculateBaseLineValue(List<double> data)
@@ -51,7 +53,17 @@ namespace OperatoerLibrary.Filters
 
         public double BaseLineAdjustBreathingValue(double dataPoint)
         {
+            AddToBaseLineList(dataPoint);
             return dataPoint - baseLineValue;
+        }
+
+        public void AddToBaseLineList(double dataPoint)
+        {
+            baseLineAdjustList.Add(dataPoint);
+            if (baseLineAdjustList.Count >250)
+            {
+                baseLineAdjustList.RemoveAt(0);
+            }
         }
 
 
