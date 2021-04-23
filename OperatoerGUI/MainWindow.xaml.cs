@@ -297,6 +297,11 @@ namespace OperatoerGUI
 
         }
 
+        /// <summary>
+        /// Takes the string from the combobox and returns the correspondent number to the controller class.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Connect_B_Click(object sender, RoutedEventArgs e)
         {
             var selected = PatientGUI_CB.Text;
@@ -323,6 +328,11 @@ namespace OperatoerGUI
         }
 
 
+        /// <summary>
+        /// Takes the two inputted numbers and adjusts
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GatingValueConfirm_b_Click(object sender, RoutedEventArgs e)
         {
 
@@ -331,7 +341,6 @@ namespace OperatoerGUI
                 UpperGatingValue = Convert.ToDouble(Gatingvalueupper_TB.Text);
                 LowerGatingValue = Convert.ToDouble(GatingValueLower_TB.Text);
                 AdjustGatingValues();
-
             }
 
 

@@ -14,6 +14,9 @@ namespace OperatoerLibrary
         private readonly int port = 11000;
         private Socket socket;
 
+        /// <summary>
+        /// Creates relevant pots for the UDP connection between this program and patient program 
+        /// </summary>
         public void OpenSendPorts()
         {
             broadCastIP = IPAddress.Parse("127.0.0.1"); //Computer vi sender til IVP4 adresse på det givne netværk
@@ -23,6 +26,12 @@ namespace OperatoerLibrary
             endPointIP = new IPEndPoint(broadCastIP, port);
         }
 
+        /// <summary>
+        /// Sends Measurement data to Patient program
+        /// </summary>
+        /// <param name="measurementData">
+        /// The measurement data for a single point
+        /// </param>
         public void SendMeasurementData(DTO_Measurement measurementData)
         {
             var json = JsonConvert.SerializeObject(measurementData);
@@ -34,6 +43,12 @@ namespace OperatoerLibrary
             
             
         }
+        /// <summary>
+        /// Sends information about what GUI to use to the patient program
+        /// </summary>
+        /// <param name="guiInfo">
+        /// A number that indicates the correct userinterface theme for Patient program to use
+        /// </param>
         public void SendGuiInfo(int guiInfo)
         {
             SingledataEP = new IPEndPoint(broadCastIP, 11000);

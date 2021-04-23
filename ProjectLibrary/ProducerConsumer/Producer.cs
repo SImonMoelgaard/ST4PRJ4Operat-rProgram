@@ -19,35 +19,35 @@ namespace OperatoerLibrary.ProducerConsumer
         public List<double> BreathingSamples = new List<double>();
         private BreathingValuesDataContainer datacontainer;
 
+        /// <summary>
+        /// Recieves the DataContainer from controller
+        /// </summary>
+        /// <param name="breathingData"></param>
         public Producer(BlockingCollection<BreathingValuesDataContainer> breathingData)
         {
             _breathingData = breathingData;
         }
 
+        /// <summary>
+        /// Runs the GetOneBreathingValue Method
+        /// </summary>
         public void Run()
         {
-            
-                GetOneBreathingValue();
-                //Tilføj tråd   
-            
-            
+            GetOneBreathingValue();
         }
 
-
+        /// <summary>
+        /// Reads the file used for program
+        /// </summary>
         public void GetOneBreathingValue()
         {
-
             string log = "DIBH.txt";
             
-
             if (File.Exists(log))
             {
                 data =  File.ReadAllText(log);
                 dataList = data.Split(",");
-
-
             }
-
 
             foreach (var VARIABLE in dataList)
             {
@@ -60,25 +60,8 @@ namespace OperatoerLibrary.ProducerConsumer
                    datacontainer = new BreathingValuesDataContainer
                        {BreathingSample = BreathingSamples};
                }
-               
-
-
-
             }
             _breathingData.Add(datacontainer);
-
-            
-            //for (int i = 0; i < data.Length; i++)
-            //{
-
-            //    string samplestring = data[i];
-            //    double sample = Convert.ToDouble(samplestring);
-            //    BreathingValuesDataContainer breathingValuesDataContainer = new BreathingValuesDataContainer{BreathingSample = Convert.ToDouble(sample)};
-
-            //    _breathingData.Add(breathingValuesDataContainer);
-            //    Thread.Sleep(sampletime);
-
-            //}
 
         }
 
