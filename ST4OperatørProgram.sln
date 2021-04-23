@@ -8,9 +8,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OperatoerProgramTestUnit", "OperatørProgramTestUnit\OperatoerProgramTestUnit.csproj", "{518EA759-2242-4340-92FA-5EFC0CD1FC7D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1D7A1052-7BD2-4F85-948E-FE377A7AD00F} = {1D7A1052-7BD2-4F85-948E-FE377A7AD00F}
+		{687F39AC-221F-42D1-A1DA-508A0A75BC3C} = {687F39AC-221F-42D1-A1DA-508A0A75BC3C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatoerGUI", "OperatoerGUI\OperatoerGUI.csproj", "{687F39AC-221F-42D1-A1DA-508A0A75BC3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OperatoerGUI", "OperatoerGUI\OperatoerGUI.csproj", "{687F39AC-221F-42D1-A1DA-508A0A75BC3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

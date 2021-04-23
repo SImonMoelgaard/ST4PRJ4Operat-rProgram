@@ -14,8 +14,9 @@ namespace OperatoerLibrary.ProducerConsumer
         private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData;
         private const int sampletime = 33;
         private string dataRead;
-        private string data;
-        private string[] dataList;
+        private string data = "";
+        private string datavalue = "";
+        private string[] dataList = new string[1];
         public List<double> BreathingSamples = new List<double>();
         private BreathingValuesDataContainer datacontainer;
 
@@ -51,8 +52,8 @@ namespace OperatoerLibrary.ProducerConsumer
 
             foreach (var VARIABLE in dataList)
             {
-                string data = VARIABLE.Replace("0\r\n", string.Empty);
-               if (data.Length >= 7)
+                datavalue = VARIABLE.Replace("0\r\n", string.Empty);
+               if (datavalue.Length >= 7)
                {
                    var sample = decimal.Parse(data, CultureInfo.InvariantCulture);
                    

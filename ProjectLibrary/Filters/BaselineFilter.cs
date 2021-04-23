@@ -7,7 +7,7 @@ namespace OperatoerLibrary.Filters
 {
     public class BaselineFilter : IBaseLineFilter
     {
-        private List<double> baseLineAdjustList = new List<double>();
+        public List<double> baseLineAdjustList { get; set; } = new List<double>();
         private List<double> pointstaken = new List<double>();
         private List<double> baselineValues = new List<double>();
         private int goingdown;
@@ -43,9 +43,8 @@ namespace OperatoerLibrary.Filters
                 
                 lastnumber = data;
             }
-
+            
             CalculateBaseLineValue(baselineValues);
-
 
             return baseLineValue;
         }

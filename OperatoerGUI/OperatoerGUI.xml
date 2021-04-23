@@ -40,6 +40,20 @@
             Y Axis Minimum
             </summary>
         </member>
+        <member name="M:OperatoerGUI.MainWindow.Connect_B_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Takes the string from the combobox and returns the correspondent number to the controller class.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:OperatoerGUI.MainWindow.GatingValueConfirm_b_Click(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Takes the two inputted numbers and adjusts
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
         <member name="M:OperatoerGUI.MainWindow.InitializeComponent">
             <summary>
             InitializeComponent

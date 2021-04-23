@@ -23,6 +23,8 @@ namespace OperatoerLibrary
         {
             _breathingData = datacontainer; 
           producer = new Producer(_breathingData);
+
+
         }
 
         /// <summary>
@@ -41,13 +43,12 @@ namespace OperatoerLibrary
              return baseLineFilter.AdjustBaseLineValue();
         }
 
-
         /// <summary>
         /// Loads datafile for the application
         /// </summary>
         public void loaddata()
         {
-             producer.GetOneBreathingValue();
+             producer.Run();
         }
 
         /// <summary>

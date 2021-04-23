@@ -37,11 +37,7 @@ namespace OperatoerLibrary
             var json = JsonConvert.SerializeObject(measurementData);
             var sendData = Encoding.ASCII.GetBytes(json);
             
-            
-                socket.SendTo(sendData, endPointIP);
-            
-            
-            
+            socket.SendTo(sendData, endPointIP);
         }
         /// <summary>
         /// Sends information about what GUI to use to the patient program
