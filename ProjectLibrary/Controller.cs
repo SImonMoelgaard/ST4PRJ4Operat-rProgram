@@ -78,13 +78,5 @@ namespace OperatoerLibrary
         {
             udpSender.SendGuiInfo(guiID);
         }
-
-       
-
-
-        
-
-
     }
-
 }
