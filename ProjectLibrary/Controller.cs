@@ -46,7 +46,7 @@ namespace OperatoerLibrary
         /// <summary>
         /// Loads datafile for the application
         /// </summary>
-        public void loaddata()
+        public void LoadData()
         {
              producer.Run();
         }
