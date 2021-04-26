@@ -144,7 +144,7 @@ namespace OperatoerGUI
        
         private void Read()
         {
-           cr.loaddata();
+           cr.LoadData();
         // Indlæser bare filen
            
             while (IsReading)

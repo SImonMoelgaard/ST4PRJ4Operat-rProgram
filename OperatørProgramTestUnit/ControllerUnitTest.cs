@@ -45,7 +45,7 @@ namespace OperatoerProgramTestUnit
         //[Test]
         //public void LoadDataTest()
         //{
-        //    _uut.loaddata();
+        //    _uut.LoadData();
         //    //fakeProducer.Received().Run();
         //    Assert.Pass();
         //}
