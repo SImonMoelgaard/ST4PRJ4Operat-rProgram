@@ -76,8 +76,7 @@
         <Button x:Name="Adjust_b" Content="Adjust" HorizontalAlignment="Left" Margin="145,217,0,0" VerticalAlignment="Top" Width="56" Click="Adjust_b_Click"/>
         <Label Content="Adjust Gating values:" HorizontalAlignment="Left" Margin="19,243,0,0" VerticalAlignment="Top"/>
         <Button x:Name="GatingValueConfirm_b" Content="Confirm" HorizontalAlignment="Left" Margin="24,315,0,0" VerticalAlignment="Top" Width="56" RenderTransformOrigin="-1.111,3.82" Click="GatingValueConfirm_b_Click"/>
-        <TextBox HorizontalAlignment="Left" Margin="145,366,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="56"/>
-        <Label Content="Radiation time left:" HorizontalAlignment="Left" Margin="17,362,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="Waring_L" Content="" HorizontalAlignment="Left" Margin="24,340,0,0" VerticalAlignment="Top" Width="177"/>
         <Button x:Name="Connect_B" Content="Opret forbindelse" HorizontalAlignment="Left" Margin="24,130,0,0" VerticalAlignment="Top" Width="156" Click="Connect_B_Click"/>
         <TextBox x:Name="GatingValueLower_TB" HorizontalAlignment="Left" Margin="24,292,0,0" Text="Lower Value" TextWrapping="Wrap" VerticalAlignment="Top" Width="177"/>
         <TextBox x:Name="Gatingvalueupper_TB" HorizontalAlignment="Left" Margin="24,269,0,0" Text="Upper Value" TextWrapping="Wrap" VerticalAlignment="Top" Width="177"/>

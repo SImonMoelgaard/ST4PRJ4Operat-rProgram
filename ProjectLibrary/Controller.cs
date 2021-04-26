@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using OperatoerLibrary.DTO;
 using OperatoerLibrary.Filters;
 using OperatoerLibrary.ProducerConsumer;
 
@@ -12,8 +13,9 @@ namespace OperatoerLibrary
         private IProducer producer;
         private IBaseLineFilter baseLineFilter = new BaselineFilter();
         private IUDPSender udpSender = new UDPSender();
+        private IGatingArea gatingArea = new GatingArea();
         private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData;
-       
+        private DTO_GatingValues gatingValues;
 
         /// <summary>
         /// CTOR, Recieves datacontainer from mainWindow.
@@ -78,6 +80,18 @@ namespace OperatoerLibrary
         public void SendGUIInfo(int guiID)
         {
             udpSender.SendGuiInfo(guiID);
+        }
+
+        public string SaveGatingArea(double lowerGating, double higherGating)
+        {
+            var result = gatingArea.SaveGatingArea(lowerGating, higherGating);
+            return result;
+        }
+
+        public DTO_GatingValues GetGatingValue()
+        {
+            gatingValues = gatingArea.GetGatingValue();
+            return gatingValues;
         }
     }
 }
