@@ -54,6 +54,7 @@ namespace OperatoerGUI
         private double UpperGatingValue = -18, LowerGatingValue = -18.3;
         private double UpperGatingValueAdjusted = 0, LowerGatingValueAdjusted = 0;
         private double baseLine = 0;
+        private DTO_GatingValues gatingValues;
 
          //BlockingCollection<BreathingValuesDataContainer> _datacollection = new BlockingCollection<BreathingValuesDataContainer>();
          
@@ -351,7 +352,11 @@ namespace OperatoerGUI
                 }
                 else
                 {
+                    gatingValues = cr.GetGatingValue();
+                    Gatingvalueupper_TB.Text = Convert.ToString(gatingValues.UpperGatingValue);
+                    GatingValueLower_TB.Text = Convert.ToString(gatingValues.LowerGatingValue);
                     Waring_L.Content = result;
+                    
                 }
 
 
