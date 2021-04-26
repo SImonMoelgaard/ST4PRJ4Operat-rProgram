@@ -323,8 +323,10 @@ namespace OperatoerGUI
 
         private void AdjustGatingValues()
         {
+            
             UpperGatingValueAdjusted = UpperGatingValue - baseLine;
             LowerGatingValueAdjusted = LowerGatingValue - baseLine;
+
         }
 
 
@@ -338,9 +340,23 @@ namespace OperatoerGUI
 
             if (Gatingvalueupper_TB.Text != null && GatingValueLower_TB.Text != null)
             {
-                UpperGatingValue = Convert.ToDouble(Gatingvalueupper_TB.Text);
-                LowerGatingValue = Convert.ToDouble(GatingValueLower_TB.Text);
-                AdjustGatingValues();
+                string result = cr.SaveGatingArea(Convert.ToDouble(Gatingvalueupper_TB.Text),
+                    Convert.ToDouble(GatingValueLower_TB.Text));
+                if (result == "Succes")
+                {
+                    UpperGatingValue = Convert.ToDouble(Gatingvalueupper_TB.Text);
+                    LowerGatingValue = Convert.ToDouble(GatingValueLower_TB.Text);
+                    AdjustGatingValues();
+                    Waring_L.Content = result;
+                }
+                else
+                {
+                    Waring_L.Content = result;
+                }
+
+
+;
+                
             }
 
 

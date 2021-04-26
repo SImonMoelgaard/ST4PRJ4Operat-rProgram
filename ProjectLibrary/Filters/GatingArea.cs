@@ -5,9 +5,10 @@ using OperatoerLibrary.DTO;
 
 namespace OperatoerLibrary.Filters
 {
-    public class GatingArea
+    public class GatingArea : IGatingArea
     {
-        private DTO_GatingValues gatingValue;
+        public DTO_GatingValues gatingValue { get; set; }
+        
         public string SaveGatingArea(double lowerGating, double higherGating)
         {
             
