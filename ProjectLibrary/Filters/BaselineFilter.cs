@@ -7,7 +7,7 @@ namespace OperatoerLibrary.Filters
 {
     public class BaselineFilter : IBaseLineFilter
     {
-        public List<double> baseLineAdjustList { get; set; } = new List<double>();
+        public List<double> BaseLineAdjustList { get; set; } = new List<double>();
         private List<double> pointstaken = new List<double>();
         private List<double> baselineValues = new List<double>();
         private int goingdown;
@@ -22,7 +22,7 @@ namespace OperatoerLibrary.Filters
         /// </returns>
         public double AdjustBaseLineValue()
         {
-            foreach (var data in baseLineAdjustList)
+            foreach (var data in BaseLineAdjustList)
             {
                 pointstaken.Add(data);
                 if (data < lastnumber)
@@ -83,10 +83,10 @@ namespace OperatoerLibrary.Filters
         /// </param>
         public void AddToBaseLineList(double dataPoint)
         {
-            baseLineAdjustList.Add(dataPoint);
-            if (baseLineAdjustList.Count >250)
+            BaseLineAdjustList.Add(dataPoint);
+            if (BaseLineAdjustList.Count >250)
             {
-                baseLineAdjustList.RemoveAt(0);
+                BaseLineAdjustList.RemoveAt(0);
             }
         }
 

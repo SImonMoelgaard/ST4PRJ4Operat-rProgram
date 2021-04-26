@@ -11,6 +11,6 @@ namespace OperatoerLibrary.Filters
         public double BaseLineAdjustBreathingValue(double dataPoint);
         public double AdjustBaseLineValue();
         public void AddToBaseLineList(double dataPoint);
-        public List<double> baseLineAdjustList { get; set; }
+        public List<double> BaseLineAdjustList { get; set; }
     }
 }
