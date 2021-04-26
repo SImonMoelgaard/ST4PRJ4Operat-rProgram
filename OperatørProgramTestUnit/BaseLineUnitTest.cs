@@ -59,7 +59,7 @@ namespace OperatoerProgramTestUnit
                 _uut.AddToBaseLineList(random.Next(1, 5));
             }
 
-            var data = _uut.baseLineAdjustList.Count;
+            var data = _uut.BaseLineAdjustList.Count;
             Assert.AreEqual(250, data);
         }
 
