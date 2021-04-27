@@ -15,8 +15,10 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using LiveCharts;
 using LiveCharts.Configurations;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using OperatoerLibrary;
 using OperatoerLibrary.DTO;
@@ -29,7 +31,7 @@ namespace OperatoerGUI
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
 
         /// <summary>
@@ -40,6 +42,8 @@ namespace OperatoerGUI
         //private double yAxisMax;
         //private double yAxisMin;
 
+        //public double axisMax { get; set; }
+        //public double axisMin { get; set; }
         public Func<double, string> DateTimeFormatter { get; set; }
 
         public double AxisStep { get; set; }
@@ -56,66 +60,121 @@ namespace OperatoerGUI
         private double baseLine = 0;
         private DTO_GatingValues gatingValues;
 
-         //BlockingCollection<BreathingValuesDataContainer> _datacollection = new BlockingCollection<BreathingValuesDataContainer>();
+         BlockingCollection<BreathingValuesDataContainer> _datacollection = new BlockingCollection<BreathingValuesDataContainer>();
          
          
         
-         public event PropertyChangedEventHandler PropertyChanged;
+         public event PropertyChangedEventHandler PropertyChangedtest;
          
          
 
          private List<DTO_Measurement> data;
          private Controller cr;
-      
-        
-        public MainWindow()
-        {
-            InitializeComponent();
-        //IProducer producer = new Producer(_datacollection);
+         private double _trend;
+         public SeriesCollection LastHourSeries { get; set; }
+         private double _lastLecture;
 
-        //     producer = new Producer(_datacollection);
-        //    producer.GetOneBreathingValue();
+         
+         public MainWindow ()
+         {
+             InitializeComponent();
+             //IProducer producer = new Producer(_datacollection);
 
-        //    BreathingValuesDataContainer container = _datacollection.Take();
-        
-            cr = new Controller(_breathingData);
+             //     producer = new Producer(_datacollection);
+             //    producer.GetOneBreathingValue();
+
+             //    BreathingValuesDataContainer container = _datacollection.Take();
+
+             //LastHourSeries = new SeriesCollection
+             //{
+             //    new LineSeries
+             //    {
+             //        AreaLimit = -10,
+             //        Values = new ChartValues<ObservableValue>
+             //        {
+             //            new ObservableValue(3),
+             //            new ObservableValue(5),
+             //            new ObservableValue(6),
+             //            new ObservableValue(7),
+             //            new ObservableValue(3),
+             //            new ObservableValue(4),
+             //            new ObservableValue(2),
+             //            new ObservableValue(5),
+             //            new ObservableValue(8),
+             //            new ObservableValue(3),
+             //            new ObservableValue(5),
+             //            new ObservableValue(6),
+             //            new ObservableValue(7),
+             //            new ObservableValue(3),
+             //            new ObservableValue(4),
+             //            new ObservableValue(2),
+             //            new ObservableValue(5),
+             //            new ObservableValue(8)
+             //        }
+             //    }
+             //};
+             //_trend = 8;
+
+
+             
             
-        var mapper = Mappers.Xy<MeasurementModel>()
-            .X(model => model.Time.Ticks)
-            .Y(model => model.RawData);
-
-        Charting.For<MeasurementModel>(mapper);
 
 
-           
-        ChartValues = new ChartValues<MeasurementModel>();
-           
+             cr = new Controller(_breathingData);
 
-        DateTimeFormatter = value => new DateTime((long) value).ToString("hh:mm:ss:ms");
+             var mapper = Mappers.Xy<MeasurementModel>()
+                 .X(model => model.Time.Ticks)
+                 .Y(model => model.RawData);
+
+             Charting.For<MeasurementModel>(mapper);
 
 
-        AxisStep = TimeSpan.FromSeconds(1).Ticks;
 
-        AxisUnit = TimeSpan.TicksPerSecond;
+             ChartValues = new ChartValues<MeasurementModel>();
 
-        SetAxisLimits(DateTime.Now);
 
-        IsReading = false;
-        
+             DateTimeFormatter = value => new DateTime((long) value).ToString("hh:mm:ss:ms");
+
+
+             AxisStep = TimeSpan.FromSeconds(1).Ticks;
+
+            AxisUnit = TimeSpan.TicksPerSecond;
+
+            SetAxisLimits(DateTime.Now);
+
+            IsReading = false;
+
             cr.OpenPorts();
 
 
-            
+             DataContext = this;
 
+             
 
-        DataContext = this;
+         }
 
+         //public void Read()
+         //{
+         //    Task.Factory.StartNew(() =>
+         //    {
+         //        var r = new Random();
 
-     
-        }
+         //        Action action = delegate
+         //        {
+         //            LastHourSeries[0].Values.Add(new ObservableValue(_trend));
+         //            LastHourSeries[0].Values.RemoveAt(0);
+         //            SetLecture();
+         //        };
 
-        
-        
+         //        while (IsReading)
+         //        {
+         //            Thread.Sleep(500);
+         //            _trend += (r.NextDouble() > 0.3 ? 1 : -1) * r.Next(0, 5);
+         //            Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, action);
+         //        }
+         //    });
+         //}
+
         public double AxisMax
         {
             get { return axisMax; }
@@ -142,31 +201,31 @@ namespace OperatoerGUI
 
 
         private List<double> value;
-       
+
         private void Read()
         {
-           cr.LoadData();
-        // Indlæser bare filen
-           
+            cr.LoadData();
+            // Indlæser bare filen
+
             while (IsReading)
             {
+
+
                 
-
-
 
 
                 try
                 {
-                    BreathingValuesDataContainer data  = _breathingData.Take();
+                    BreathingValuesDataContainer data = _breathingData.Take();
                     value = data.BreathingSample;
                     
-                    
+
                     //Metode der kaldes for at få data fra køen
-                
-                    
+
+
                     foreach (var VARIABLE in value)
                     {
-
+                        Thread.Sleep(40);
                         double dataPoint = cr.AdjustBaseLine(VARIABLE);
 
                         DTO_Send = new DTO_Measurement(dataPoint, LowerGatingValueAdjusted, UpperGatingValueAdjusted, DateTime.Now);
@@ -191,7 +250,7 @@ namespace OperatoerGUI
                         SetAxisLimits(DateTime.Now);
 
 
-                        if (ChartValues.Count > 500)
+                        if (ChartValues.Count > 150)
                         {
                             ChartValues.RemoveAt(0);
                         }
@@ -204,10 +263,10 @@ namespace OperatoerGUI
 
 
                         });
-                        Thread.Sleep(40);
+                        
                     }
 
-                   
+
 
                 }
                 catch (Exception e)
@@ -215,7 +274,7 @@ namespace OperatoerGUI
                     Console.WriteLine(e);
                     throw;
                 }
-                
+
 
 
 
@@ -226,24 +285,19 @@ namespace OperatoerGUI
         private void SetAxisLimits(DateTime now)
         {
             AxisMax = now.Ticks + TimeSpan.FromSeconds(0).Ticks; // lets force the axis to be 0 second ahead
-            AxisMin = now.Ticks - TimeSpan.FromSeconds(10).Ticks; // and 4 seconds behind
+            AxisMin = now.Ticks - TimeSpan.FromSeconds(6).Ticks; // and 4 seconds behind
 
         }
 
 
 
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         
 
-       
 
-       
 
-      
+
+
+
 
         private void testknap_Click(object sender, RoutedEventArgs e)
         {
@@ -273,7 +327,9 @@ namespace OperatoerGUI
 
         private void Start_b_Click(object sender, RoutedEventArgs e)
         {
+            
             IsReading = !IsReading;
+            if (IsReading) Task.Factory.StartNew(Read);
         }
 
         private void MeasurementChart_Loaded(object sender, RoutedEventArgs e)
@@ -319,7 +375,7 @@ namespace OperatoerGUI
         private void Stop_b_Click(object sender, RoutedEventArgs e)
         {
             IsReading = false;
-            if (!IsReading) Task.Factory.StartNew(Read);
+            
         }
 
         private void AdjustGatingValues()
@@ -365,11 +421,47 @@ namespace OperatoerGUI
             }
 
 
-
-
-
-
-
         }
+        //public double LastLecture
+        //{
+        //    get { return _lastLecture; }
+        //    set
+        //    {
+        //        _lastLecture = value;
+        //        OnPropertyChanged("LastLecture");
+        //    }
+        //}
+        
+        //private void SetLecture()
+        //{
+        //    var target = ((ChartValues<ObservableValue>)LastHourSeries[0].Values).Last().Value;
+        //    var step = (target - _lastLecture) / 4;
+
+        //    Task.Factory.StartNew(() =>
+        //    {
+        //        for (var i = 0; i < 4; i++)
+        //        {
+        //            Thread.Sleep(100);
+        //            LastLecture += step;
+        //        }
+        //        LastLecture = target;
+        //    });
+        //}
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        //protected virtual void OnPropertyChanged(string propertyName = null)
+        //{
+        //    var handler = PropertyChanged;
+        //    if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        //}
+
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
+
+
 }

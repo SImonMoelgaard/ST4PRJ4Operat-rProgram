@@ -55,7 +55,7 @@ namespace OperatoerLibrary.ProducerConsumer
                 datavalue = VARIABLE.Replace("0\r\n", string.Empty);
                if (datavalue.Length >= 7)
                {
-                   var sample = decimal.Parse(data, CultureInfo.InvariantCulture);
+                   var sample = decimal.Parse(datavalue, CultureInfo.InvariantCulture);
                    
                    BreathingSamples.Add(Convert.ToDouble(sample));
                    datacontainer = new BreathingValuesDataContainer
