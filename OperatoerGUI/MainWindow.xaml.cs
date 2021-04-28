@@ -78,48 +78,7 @@ namespace OperatoerGUI
          public MainWindow ()
          {
              InitializeComponent();
-             //IProducer producer = new Producer(_datacollection);
-
-             //     producer = new Producer(_datacollection);
-             //    producer.GetOneBreathingValue();
-
-             //    BreathingValuesDataContainer container = _datacollection.Take();
-
-             //LastHourSeries = new SeriesCollection
-             //{
-             //    new LineSeries
-             //    {
-             //        AreaLimit = -10,
-             //        Values = new ChartValues<ObservableValue>
-             //        {
-             //            new ObservableValue(3),
-             //            new ObservableValue(5),
-             //            new ObservableValue(6),
-             //            new ObservableValue(7),
-             //            new ObservableValue(3),
-             //            new ObservableValue(4),
-             //            new ObservableValue(2),
-             //            new ObservableValue(5),
-             //            new ObservableValue(8),
-             //            new ObservableValue(3),
-             //            new ObservableValue(5),
-             //            new ObservableValue(6),
-             //            new ObservableValue(7),
-             //            new ObservableValue(3),
-             //            new ObservableValue(4),
-             //            new ObservableValue(2),
-             //            new ObservableValue(5),
-             //            new ObservableValue(8)
-             //        }
-             //    }
-             //};
-             //_trend = 8;
-
-
              
-            
-
-
              cr = new Controller(_breathingData);
 
              var mapper = Mappers.Xy<MeasurementModel>()
@@ -153,27 +112,7 @@ namespace OperatoerGUI
 
          }
 
-         //public void Read()
-         //{
-         //    Task.Factory.StartNew(() =>
-         //    {
-         //        var r = new Random();
-
-         //        Action action = delegate
-         //        {
-         //            LastHourSeries[0].Values.Add(new ObservableValue(_trend));
-         //            LastHourSeries[0].Values.RemoveAt(0);
-         //            SetLecture();
-         //        };
-
-         //        while (IsReading)
-         //        {
-         //            Thread.Sleep(500);
-         //            _trend += (r.NextDouble() > 0.3 ? 1 : -1) * r.Next(0, 5);
-         //            Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal, action);
-         //        }
-         //    });
-         //}
+        
 
         public double AxisMax
         {
@@ -258,8 +197,7 @@ namespace OperatoerGUI
 
                         this.Dispatcher.Invoke(() =>
                         {
-                            Clock_TB.Text = Convert.ToString(DateTime.Now);
-                            Showdata_TB.Text = Convert.ToString(dataPoint);
+                            
 
 
                         });
@@ -299,85 +237,16 @@ namespace OperatoerGUI
 
 
 
-        private void testknap_Click(object sender, RoutedEventArgs e)
-        {
-            
+        
+       
 
-                //var top = Canvas.GetTop(DENHER);
-                //if (top<50)
-                //{
-                //    Canvas.SetTop(DENHER, Canvas.GetTop(DENHER)+5);
-                //}
-                //else
-                //{
-                //    Canvas.SetTop(DENHER, Canvas.GetTop(DENHER)-5);
-                //}
+        
+       
 
-        }
-
-        private void ScaleUp_b_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void ScaleDown_b_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Start_b_Click(object sender, RoutedEventArgs e)
-        {
-            
-            IsReading = !IsReading;
-            if (IsReading) Task.Factory.StartNew(Read);
-        }
-
-        private void MeasurementChart_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void MeasurementChart_UpdaterTick(object sender)
-        {
-
-        }
-
-        private void MeasurementChart_Loaded_1(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Adjust_b_Click(object sender, RoutedEventArgs e)
-        {
-           baseLine = cr.AdjustBaseLine();
-           AdjustGatingValues();
-
-        }
-
+       
         /// <summary>
         /// Takes the string from the combobox and returns the correspondent number to the controller class.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Connect_B_Click(object sender, RoutedEventArgs e)
-        {
-            var selected = PatientGUI_CB.Text;
-            int guiType = 1;
-            if (selected == "Standard") { guiType = 1; }
-            else if (selected == "Jul") { guiType = 2;}
-            
-
-
-
-            cr.SendGUIInfo(guiType);
-        }
-
-        private void Stop_b_Click(object sender, RoutedEventArgs e)
-        {
-            IsReading = false;
-            
-        }
-
         private void AdjustGatingValues()
         {
             
@@ -392,73 +261,121 @@ namespace OperatoerGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void GatingValueConfirm_b_Click(object sender, RoutedEventArgs e)
-        {
+       
 
-            if (Gatingvalueupper_TB.Text != null && GatingValueLower_TB.Text != null)
+        private void Start_B_Click_1(object sender, RoutedEventArgs e)
+        {
+            IsReading = !IsReading;
+            if (IsReading) Task.Factory.StartNew(Read);
+
+            Stop_B.Visibility = Visibility.Visible;
+            Start_B.Visibility = Visibility.Hidden;
+        }
+
+        private void Stop_B_Click_1(object sender, RoutedEventArgs e)
+        {
+            IsReading = false;
+            Start_B.Visibility = Visibility.Visible;
+            Stop_B.Visibility = Visibility.Hidden;
+        }
+
+        private void UpperLimit_TB_GotFocus(object sender, RoutedEventArgs e)
+        {
+            GotLostFocus(UpperLimit_TB, "Upper limit");
+        }
+
+        private void UpperLimit_TB_LostFocus(object sender, RoutedEventArgs e)
+        {
+            GotLostFocus(UpperLimit_TB, "Upper limit");
+        }
+
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void LowerLimit_TB_LostFocus(object sender, RoutedEventArgs e)
+        {
+            GotLostFocus(LowerLimit_TB, "Lower limit");
+        }
+
+        private void LowerLimit_TB_GotFocus(object sender, RoutedEventArgs e)
+        {
+            GotLostFocus(LowerLimit_TB, "Lower limit");
+        }
+
+        private void Select_B_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = PatientGUI_cb.Text;
+            int guiType = 1;
+            if (selected == "Standard") { guiType = 1; }
+            else if (selected == "Jul") { guiType = 2;}
+            
+
+
+
+            cr.SendGUIInfo(guiType);
+        }
+
+        private void AdjustBaseLine_B_Click(object sender, RoutedEventArgs e)
+        {
+            baseLine = cr.AdjustBaseLine();
+            LastBaseLine_TB.Text = Convert.ToString(baseLine);
+            AdjustGatingValues();
+        }
+
+        private void Adjust_Limit_B_Click(object sender, RoutedEventArgs e)
+        {
+            if (UpperLimit_TB.Text != null && LowerLimit_TB.Text != null)
             {
-                string result = cr.SaveGatingArea(Convert.ToDouble(Gatingvalueupper_TB.Text),
-                    Convert.ToDouble(GatingValueLower_TB.Text));
+                string result = cr.SaveGatingArea(Convert.ToDouble(UpperLimit_TB.Text),
+                    Convert.ToDouble(LowerLimit_TB.Text));
                 if (result == "Succes")
                 {
-                    UpperGatingValue = Convert.ToDouble(Gatingvalueupper_TB.Text);
-                    LowerGatingValue = Convert.ToDouble(GatingValueLower_TB.Text);
+                    UpperGatingValue = Convert.ToDouble(UpperLimit_TB.Text);
+                    LowerGatingValue = Convert.ToDouble(LowerLimit_TB.Text);
                     AdjustGatingValues();
-                    Waring_L.Content = result;
+                    LimitValueWarning_Label.Text = result;
+                    LimitValueWarning_Label.Visibility = Visibility.Visible;
                 }
                 else
                 {
                     gatingValues = cr.GetGatingValue();
-                    Gatingvalueupper_TB.Text = Convert.ToString(gatingValues.UpperGatingValue);
-                    GatingValueLower_TB.Text = Convert.ToString(gatingValues.LowerGatingValue);
-                    Waring_L.Content = result;
+                    UpperLimit_TB.Text = Convert.ToString(gatingValues.UpperGatingValue);
+                    LowerLimit_TB.Text = Convert.ToString(gatingValues.LowerGatingValue);
+                    LimitValueWarning_Label.Text = result;
+                    LimitValueWarning_Label.Visibility = Visibility.Visible;
                     
                 }
 
 
-;
+                
                 
             }
-
-
         }
-        //public double LastLecture
-        //{
-        //    get { return _lastLecture; }
-        //    set
-        //    {
-        //        _lastLecture = value;
-        //        OnPropertyChanged("LastLecture");
-        //    }
-        //}
-        
-        //private void SetLecture()
-        //{
-        //    var target = ((ChartValues<ObservableValue>)LastHourSeries[0].Values).Last().Value;
-        //    var step = (target - _lastLecture) / 4;
 
-        //    Task.Factory.StartNew(() =>
-        //    {
-        //        for (var i = 0; i < 4; i++)
-        //        {
-        //            Thread.Sleep(100);
-        //            LastLecture += step;
-        //        }
-        //        LastLecture = target;
-        //    });
-        //}
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        //protected virtual void OnPropertyChanged(string propertyName = null)
-        //{
-        //    var handler = PropertyChanged;
-        //    if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        //}
+        private void Close_B_Click(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+
+        public void GotLostFocus(TextBox a, string text)
+        {
+            if (a.Text==text)
+            {
+                a.Text = "";
+            }
+            else if (a.Text == string.Empty)
+            {
+                a.Text = text;
+            }
+
         }
 
     }

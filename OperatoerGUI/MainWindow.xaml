@@ -6,146 +6,792 @@
         xmlns:local="clr-namespace:OperatoerGUI"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MeasurementWindow" Height="450" Width="800">
+        Title="MeasurementWindow" Height="720" Width="1280">
+
+    <Window.Resources>
+        <!--Textbox Template-->
+        <Style TargetType="{x:Type TextBox}" x:Key="roundcornerTextboxwithbordereffect">
+            <Setter Property="FontFamily"
+                    Value="Fonts/Roboto-Light.ttf #Roboto"/>
+
+            <Setter Property="VerticalAlignment"
+                    Value="Center"/>
+
+            <Setter Property="HorizontalAlignment"
+                    Value="Left"/>
+
+            <Setter Property="Foreground"
+                    Value="Black"/>
+
+            <Setter Property="FontSize"
+                    Value="18"/>
+
+
+
+            <Setter Property="Padding" Value="10"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border Background="{TemplateBinding Background}"    
+                                x:Name="Bd" BorderBrush="Black"   
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="Width" Value="Auto">
+                                <Setter Property="MinWidth" Value="200"/>
+                            </Trigger>
+                            <Trigger Property="Height" Value="Auto">
+                                <Setter Property="MinHeight" Value="20"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="Gray"></Setter>
+                                <Setter TargetName="Bd" Property="BorderThickness" Value="1"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="Black"></Setter>
+                                <Setter TargetName="Bd" Property="BorderThickness" Value="1"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--ButtonRound template Start-->
+        <Style x:Key="RoundCorner" TargetType="{x:Type Button}">
+            <Setter Property="FontFamily"
+                    Value="Fonts/Roboto-Light.ttf #Roboto"/>
+
+            <Setter Property="VerticalAlignment"
+                    Value="Center"/>
+
+            <Setter Property="HorizontalAlignment"
+                    Value="Left"/>
+
+            <Setter Property="Foreground"
+                    Value="Black"/>
+
+            <Setter Property="FontSize"
+                    Value="24"/>
+
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <Grid x:Name="grid">
+                            <Border x:Name="border" CornerRadius="8" BorderBrush="Black" BorderThickness="1">
+                                <Border.Background>
+                                    Green
+                                </Border.Background>
+                                <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.FontWeight="Bold">
+                                </ContentPresenter>
+                            </Border>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName ="grid" Value="SlateGray"></Setter>
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                            <RadialGradientBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                                                    <TranslateTransform X="0.02" Y="0.3"/>
+                                                </TransformGroup>
+                                            </RadialGradientBrush.RelativeTransform>
+                                            <GradientStop Color="#00000000" Offset="1"/>
+                                            <GradientStop Color="#00000000" Offset="0.1"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="grid" Value="0.80"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <!--ButtonRound template Start-->
+        <Style x:Key="RoundCornerAllOther" TargetType="{x:Type Button}">
+            <Setter Property="FontFamily"
+                    Value="Fonts/Roboto-Light.ttf #Roboto"/>
+
+            <Setter Property="VerticalAlignment"
+                    Value="Center"/>
+
+            <Setter Property="HorizontalAlignment"
+                    Value="Left"/>
+
+            <Setter Property="Foreground"
+                    Value="Black"/>
+
+            <Setter Property="FontSize"
+                    Value="20"/>
+
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <Grid x:Name="grid">
+                            <Border x:Name="border" CornerRadius="8" BorderBrush="Black" BorderThickness="1">
+                                <Border.Background>
+                                    CornflowerBlue
+                                </Border.Background>
+                                <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.FontWeight="Bold">
+                                </ContentPresenter>
+                            </Border>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName ="grid" Value="SlateGray"></Setter>
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                            <RadialGradientBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                                                    <TranslateTransform X="0.02" Y="0.3"/>
+                                                </TransformGroup>
+                                            </RadialGradientBrush.RelativeTransform>
+                                            <GradientStop Color="#00000000" Offset="1"/>
+                                            <GradientStop Color="#00000000" Offset="0.1"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="grid" Value="0.80"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <!--ButtonRound template-->
+        <Style x:Key="RoundCornerStop" TargetType="{x:Type Button}">
+            <Setter Property="FontFamily"
+                    Value="Fonts/Roboto-Light.ttf #Roboto"/>
+
+            <Setter Property="VerticalAlignment"
+                    Value="Center"/>
+
+            <Setter Property="HorizontalAlignment"
+                    Value="Left"/>
+
+            <Setter Property="Foreground"
+                    Value="Black"/>
+
+            <Setter Property="FontSize"
+                    Value="24"/>
+
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+
+                        <Grid x:Name="grid">
+                            <Border x:Name="border" CornerRadius="8" BorderBrush="Black" BorderThickness="1">
+                                <Border.Background>
+                                    Red
+                                </Border.Background>
+                                <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          TextElement.FontWeight="Bold">
+                                </ContentPresenter>
+                            </Border>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName ="grid" Value="SlateGray"></Setter>
+                                <Setter Property="Background" TargetName="border">
+                                    <Setter.Value>
+                                        <RadialGradientBrush GradientOrigin="0.496,1.052">
+                                            <RadialGradientBrush.RelativeTransform>
+                                                <TransformGroup>
+                                                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                                                    <TranslateTransform X="0.02" Y="0.3"/>
+                                                </TransformGroup>
+                                            </RadialGradientBrush.RelativeTransform>
+                                            <GradientStop Color="#00000000" Offset="1"/>
+                                            <GradientStop Color="#00000000" Offset="0.1"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" TargetName="border" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" TargetName="grid" Value="0.80"/>
+
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="32" />
+
+                            </Grid.ColumnDefinitions>
+                            <Border
+                          x:Name="Border"
+                          Grid.ColumnSpan="2"
+                          CornerRadius="8"
+                          Background="{TemplateBinding Background}"
+                          
+                          BorderBrush="#F6F6F6"
+                          
+                          BorderThickness="1" 
+                        />
+
+                            <Path
+                            x:Name="Arrow"
+                            Grid.Column="1"    
+                            Fill="{TemplateBinding Foreground}"
+                            Stroke="{TemplateBinding Foreground}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Data="M 0 0 L 4 4 L 8 0 Z"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <Border x:Name="PART_ContentHost" Focusable="True" />
+        </ControlTemplate>
+
+        <Style x:Key="theComboBox" TargetType="{x:Type ComboBox}">
+            <Setter Property="FontFamily"
+                Value="Fonts/Roboto-Light.ttf #Roboto"/>
+
+            <Setter Property="VerticalAlignment"
+                Value="Center"/>
+
+            <Setter Property="HorizontalAlignment"
+                Value="Left"/>
+
+            <Setter Property="Foreground"
+                Value="White"/>
+
+            <Setter Property="FontSize"
+                Value="20"/>
+
+
+            <Setter Property="Foreground" Value="#333" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="MinWidth" Value="150"/>
+            <Setter Property="MinHeight" Value="35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton
+                            Cursor="Hand"
+                            Name="ToggleButton"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            Foreground="{TemplateBinding Foreground}"
+                            Style="{StaticResource ComboBoxToggleButton}"
+                            Grid.Column="2"
+                            Focusable="false"
+                            IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                            ClickMode="Press"/>
+
+                            <ContentPresenter
+                            Name="ContentSite"
+                            IsHitTestVisible="False"
+                            Content="{TemplateBinding SelectionBoxItem}"
+                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                            Margin="10,3,30,3"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                            Style="{x:Null}"
+                            Template="{StaticResource ComboBoxTextBox}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="3,3,23,3"
+                            Focusable="True"                               
+                            Visibility="Hidden"
+                            IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                            <Popup
+                            Name="Popup"
+                            Placement="Bottom"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            AllowsTransparency="True"
+                            Focusable="False"
+                            PopupAnimation="Slide">
+                                <Grid
+                              Name="DropDown"
+                              SnapsToDevicePixels="True"               
+                              MinWidth="{TemplateBinding ActualWidth}"
+                              MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border
+                                    CornerRadius="8"
+                                    x:Name="DropDownBorder"
+                                    Background="White"
+                                    BorderThickness="2"
+                                    BorderBrush="#F6F6F6"
+                                    />
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95"/>
+                            </Trigger>
+
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </Trigger>
+
+
+
+
+                            <Trigger Property="IsEditable" Value="true">
+                                <Setter Property="IsTabStop" Value="false"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="theComboBoxItem" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border
+                        Name="Border"
+                        Padding="5"
+                        Margin="2"
+                        BorderThickness="2,0,0,0"
+                        CornerRadius="0"
+                        Background="Transparent"
+                        BorderBrush="Transparent">
+                            <TextBlock TextAlignment="Left">
+                            <ContentPresenter />
+                            </TextBlock>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!--<Trigger Property="IsHighlighted" Value="true">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#B3CB37"/>
+                            <Setter TargetName="Border" Property="Background" Value="#F8FAEB"/>
+                        </Trigger>-->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Gray"></Setter>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="50"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Black"></Setter>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="1"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="font_style" TargetType="TextBlock">
+
+
+
+            <Setter Property="FontFamily"
+             Value="Fonts/Roboto-Light.ttf #Roboto"/>
+
+            <Setter Property="VerticalAlignment"
+             Value="Center"/>
+
+            <Setter Property="HorizontalAlignment"
+             Value="Left"/>
+
+            <Setter Property="Foreground"
+             Value="White"/>
+
+            <Setter Property="FontSize"
+             Value="20"/>
+
+        </Style>
+    </Window.Resources>
+
+
 
     <Grid >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="11*"/>
-            <ColumnDefinition Width="69*"/>
-        </Grid.ColumnDefinitions>
+        <Grid Background="#393F47">
+
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="660"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="30*"/>
+            </Grid.RowDefinitions>
 
 
 
-        <lvc:CartesianChart AnimationsSpeed ="0:0:0:1" Name="MeasurementChart" Margin="147,184,10,16" RenderTransformOrigin="0.223,0.102" Grid.Column="1">
+            <lvc:CartesianChart  Grid.RowSpan="11" AnimationsSpeed ="0:0:0:1" Name="MeasurementChart"  RenderTransformOrigin="0.223,0.102" Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="3">
 
 
 
 
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis MinValue ="-1" MaxValue="1"></lvc:Axis>
-                <lvc:Axis Foreground="DodgerBlue" Title="Blue Axis"/>
-                <lvc:Axis >
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis MinValue ="-1" MaxValue="1"></lvc:Axis>
 
 
-                </lvc:Axis>
-
-            </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart.AxisY>
 
 
 
-            <lvc:CartesianChart.Series>
+                <lvc:CartesianChart.Series>
 
-                <lvc:LineSeries Values="{Binding ChartValues}" 
+                    <lvc:LineSeries Values="{Binding ChartValues}" 
                                 PointGeometry="{x:Null}"
                                 Fill="Transparent"
                                 Stroke="Red"/>
 
 
-            </lvc:CartesianChart.Series>
+                </lvc:CartesianChart.Series>
 
 
-            <lvc:CartesianChart.AxisX>
+                <lvc:CartesianChart.AxisX>
 
-                <lvc:Axis LabelFormatter="{Binding DateTimeFormatter}" 
+                    <lvc:Axis LabelFormatter="{Binding DateTimeFormatter}" 
                           
                           
                           Unit="{Binding AxisUnit}"
                           MaxValue="{Binding AxisMax}"
                           MinValue="{Binding AxisMin}"
                           Foreground="Black">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="{Binding AxisStep}" Stroke="Black"/>
+                        <lvc:Axis.Separator>
+                            <lvc:Separator Step="{Binding AxisStep}" Stroke="Black"/>
 
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-
-
-
-        </lvc:CartesianChart>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisX>
 
 
 
-        <Rectangle HorizontalAlignment="Left" Height="36" Stroke="Black" VerticalAlignment="Top" Width="338" Margin="-86,0,0,0" Grid.ColumnSpan="2"/>
-        <Button x:Name="Start_b" Content="Start" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Click="Start_b_Click"/>
-        <Button x:Name="Stop_b" Content="Stop" HorizontalAlignment="Left" Margin="55,8,0,0" VerticalAlignment="Top" Click="Stop_b_Click"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="100,8,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="35,8,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="81,8,0,0" VerticalAlignment="Top" Grid.Column="1"/>
-        <Rectangle HorizontalAlignment="Left" Height="148" Margin="0,36,0,0" Stroke="Black" VerticalAlignment="Top" Width="252" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="Clock_TB" HorizontalAlignment="Left" Margin="515,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="157" Grid.Column="1"/>
-        <Rectangle HorizontalAlignment="Left" Height="231" Margin="0,184,0,0" Stroke="Black" VerticalAlignment="Top" Width="252" Grid.ColumnSpan="2"/>
-        <Rectangle HorizontalAlignment="Left" Height="14" Margin="0,418,0,0" Stroke="Black" VerticalAlignment="Top" Width="800" Grid.ColumnSpan="2"/>
-        <Label Content="Adjust Baseline:" HorizontalAlignment="Left" Margin="17,214,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Button x:Name="Adjust_b" Content="Adjust" HorizontalAlignment="Left" Margin="35,217,0,0" VerticalAlignment="Top" Width="56" Click="Adjust_b_Click" Grid.Column="1"/>
-        <Label Content="Adjust Gating values:" HorizontalAlignment="Left" Margin="19,243,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Button x:Name="GatingValueConfirm_b" Content="Confirm" HorizontalAlignment="Left" Margin="24,315,0,0" VerticalAlignment="Top" Width="56" RenderTransformOrigin="-1.111,3.82" Click="GatingValueConfirm_b_Click"/>
-        <Label x:Name="Waring_L" Content="" HorizontalAlignment="Left" Margin="24,340,0,0" VerticalAlignment="Top" Width="177" Grid.ColumnSpan="2"/>
-        <Button x:Name="Connect_B" Content="Opret forbindelse" HorizontalAlignment="Left" Margin="24,130,0,0" VerticalAlignment="Top" Width="156" Click="Connect_B_Click" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="GatingValueLower_TB" HorizontalAlignment="Left" Margin="24,292,0,0" Text="Lower Value" TextWrapping="Wrap" VerticalAlignment="Top" Width="177" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="Gatingvalueupper_TB" HorizontalAlignment="Left" Margin="24,269,0,0" Text="Upper Value" TextWrapping="Wrap" VerticalAlignment="Top" Width="177" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="Showdata_TB" HorizontalAlignment="Left" Margin="151,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="61" FontSize="42" Grid.Column="1"/>
-        <ComboBox x:Name="PatientGUI_CB" HorizontalAlignment="Left" Margin="24,99,0,0" VerticalAlignment="Top" Width="156" Grid.ColumnSpan="2">
-            <ComboBoxItem x:Name="Børn" Content="Standard"/>
-            <ComboBoxItem x:Name="Unge" Content="Jul"/>
-        </ComboBox>
-        <Label Content="Vælg PatientGUI" HorizontalAlignment="Left" Margin="24,75,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+            </lvc:CartesianChart>
 
 
 
-        <!--<Grid Height="500" Width="650" Grid.ColumnSpan="2" Margin="275,-200,75,-66" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
 
-            <Grid Margin="15,-60,207,15" MaxHeight="350" Grid.ColumnSpan="2">
-                <Grid.Effect>
-                    <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" Opacity=".2" ShadowDepth="1"/>
-                </Grid.Effect>
-                <Grid.OpacityMask>
-                    <VisualBrush Visual="{Binding ElementName=Border1}" />
-                </Grid.OpacityMask>
-                <Grid.Resources>
-                    <Style TargetType="lvc:LineSeries">
-                        <Setter Property="StrokeThickness" Value="3"></Setter>
-                        <Setter Property="Stroke" Value="White"></Setter>
-                        <Setter Property="Fill" Value="#4EFFFFFF"></Setter>
-                        <Setter Property="PointGeometrySize" Value="0"></Setter>
-                        <Setter Property="LineSmoothness" Value="0"></Setter>
-                    </Style>
-                    <Style TargetType="lvc:Axis">
-                        <Setter Property="ShowLabels" Value="False"></Setter>
-                        <Setter Property="IsEnabled" Value="False"></Setter>
-                    </Style>
-                </Grid.Resources>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height=".50*"></RowDefinition>
-                    <RowDefinition Height=".5*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Border x:Name="Border1" Grid.Row="0" Grid.RowSpan="4" CornerRadius="5" Background="White" Margin="0,0,0,69" />
-                <Border Grid.Row="0" Grid.RowSpan="3" Background="Gray" ></Border>
-                <TextBlock Grid.Row="0" TextAlignment="Center" Padding="10, 10, 0, 5" Foreground="White" FontSize="18">
-                    The Current Chart
-                </TextBlock>
-                <TextBlock Grid.Row="1" TextAlignment="Center" Foreground="#59FFFFFF" Padding="0,0,0,20">2014.12.25</TextBlock>
-                <lvc:CartesianChart Grid.Row="2" Margin="0, 0, 0, 0" Series="{Binding LastHourSeries}" Hoverable="False" DataTooltip="{x:Null}">
-                    <lvc:CartesianChart.AxisX>
-                        --><!--a small visual improvement, lets hide the first points (x = 0, x=1) to get better animations--><!--
-                        <lvc:Axis MinValue="2"></lvc:Axis>
-                    </lvc:CartesianChart.AxisX>
-                </lvc:CartesianChart>
-                <StackPanel Grid.Row="3" VerticalAlignment="Center" Margin="255, 0">
-                    <TextBlock Opacity=".4" FontSize="13"><Run Text="Last value"/></TextBlock>
-                    <StackPanel Orientation="Horizontal" Height="24">
-                        <TextBlock Foreground="#303030" FontSize="40" Text="{Binding LastLecture, StringFormat=\{0:N1\}}" Width="100" />
-                        <TextBlock Foreground="#303030" FontSize="18" VerticalAlignment="Bottom" Margin="8, 20"/>
-                    </StackPanel>
-                </StackPanel>-->
-            <!--</Grid>--><!--
-        </Grid>-->
+
+
+
+
+
+
+
+
+
+            <Button x:Name="Start_B" 
+                Grid.Row="1"
+                Grid.Column="1"
+                Style="{DynamicResource RoundCorner}" 
+                Foreground="White"
+                Background="Green"
+                Height="40" 
+                VerticalAlignment="Center" 
+                Content="Start" 
+                Width="140"
+                HorizontalAlignment="Left"
+                Margin="5" Click="Start_B_Click_1"  />
+
+            <Button x:Name="Stop_B" 
+                Grid.Row="1"
+                Grid.Column="1"
+                Style="{DynamicResource RoundCornerStop}" 
+                Foreground="White"
+                Background="Green"
+                Height="40" 
+                Visibility="Hidden"
+                VerticalAlignment="Center" 
+                Content="Stop" 
+                Width="140"
+                HorizontalAlignment="Left"
+                Margin="5" Click="Stop_B_Click_1"  />
+
+
+            <TextBlock x:Name="GUILabel"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="3"
+                   Grid.Column="1"     
+                   Style="{StaticResource font_style}"
+                   Text="Select Patient Interface"
+                   FontSize="24"
+                
+                       
+        >
+            </TextBlock>
+
+            <ComboBox x:Name="PatientGUI_cb"
+                  Grid.Column="1"
+                  Grid.Row="4"
+                  Width="140"
+
+                  Style="{DynamicResource theComboBox}"
+
+                  ItemContainerStyle="{DynamicResource theComboBoxItem}" >
+
+                <ComboBoxItem>Standard</ComboBoxItem>
+                <ComboBoxItem>Christmas</ComboBoxItem>
+
+
+            </ComboBox>
+            <Button x:Name="Select_B" 
+                Grid.Row="4"
+                Grid.Column="2"
+                Style="{DynamicResource RoundCornerAllOther}" 
+                Foreground="White"
+                Background="Green"
+                Height="40" 
+                
+                VerticalAlignment="Center" 
+                Content="Send"
+                Width="140"
+                HorizontalAlignment="Left"
+                Margin="5" Click="Select_B_Click"   />
+
+
+
+            <TextBlock x:Name="Limit_Label"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="6"
+                   Grid.Column="1"     
+                   Style="{StaticResource font_style}"
+                   Text="Adjust Limit values"
+                   FontSize="24"
+                
+                       
+        >
+            </TextBlock>
+
+
+
+
+            <TextBox x:Name="LowerLimit_TB"
+                 Grid.Column="2"
+                 Grid.Row="7"
+                 Width="140"
+                     
+                 Text="Lower limit"
+                 Foreground="Gray"
+                     
+                     
+                 Style="{StaticResource roundcornerTextboxwithbordereffect}" LostFocus="LowerLimit_TB_LostFocus" GotFocus="LowerLimit_TB_GotFocus" RenderTransformOrigin="175758.132,160850.191" 
+         
+        />
+
+            <TextBox x:Name="UpperLimit_TB"
+                     Grid.Column="1"
+                     Grid.Row="7"
+                     Width="140"
+                     
+                     Text="Upper limit"
+                     Foreground="Gray"
+                     
+                     
+                     Style="{StaticResource roundcornerTextboxwithbordereffect}" GotFocus="UpperLimit_TB_GotFocus"   LostFocus="UpperLimit_TB_LostFocus" 
+         
+            />
+
+
+
+            <Button x:Name="Adjust_Limit_B" 
+                Grid.Row="8"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                
+                Style="{DynamicResource RoundCornerAllOther}" 
+                Foreground="White"
+                Background="Green"
+                Height="40" 
+                HorizontalContentAlignment="Left"
+                VerticalAlignment="Center" 
+                Content="Select"
+                Width="290"
+                HorizontalAlignment="Left" Click="Adjust_Limit_B_Click"
+                  />
+
+            <TextBlock x:Name="BaseLine_Label"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="10"
+                   Grid.Column="1"     
+                   Style="{StaticResource font_style}"
+                   Text="Adjust baseline"
+                   FontSize="24"
+                
+                       
+        >
+            </TextBlock>
+
+            <Button x:Name="AdjustBaseLine_B" 
+                Grid.Row="11"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                
+                Style="{DynamicResource RoundCornerAllOther}" 
+                Foreground="White"
+                Background="Green"
+                Height="40" 
+                
+                VerticalAlignment="Center" 
+                Content="Adjust Baseline"
+                Width="290"
+                HorizontalAlignment="Left" Click="AdjustBaseLine_B_Click"
+                  />
+
+            <TextBlock x:Name="LastBaseLine_Label"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="12"
+                   Grid.Column="1"     
+                   Style="{StaticResource font_style}"
+                   Text="Latest Baseline:"
+                   FontSize="24" IsEnabled="False"
+                
+                       
+        >
+            </TextBlock>
+            <TextBox x:Name="LastBaseLine_TB"
+                 Grid.ColumnSpan="2"
+                 Grid.Column="1"
+                 
+                 Grid.Row="13"
+                 Width="290"
+                     
+                 Text="Adjust Baseline"
+                 Foreground="Gray"
+                     
+                     
+                 Style="{StaticResource roundcornerTextboxwithbordereffect}" 
+         
+        />
+
+
+            <Button x:Name="Close_B" 
+                    Grid.Row="14"
+                    Grid.Column="6"
+                    Style="{DynamicResource RoundCornerStop}" 
+                    Foreground="White"
+                    Background="Green"
+                    Height="40" 
+                    
+                    VerticalAlignment="Top" 
+                    Content="Close" 
+                    Width="140"
+                    HorizontalAlignment="Right"
+                    Margin="0,681,-3835,0" Click="Close_B_Click"  />
+
+            <TextBlock x:Name="LimitValueWarning_Label"
+                       Grid.ColumnSpan="2"
+                       Grid.Row="9"
+                       Grid.Column="1"     
+                       Foreground="Red"
+                       Visibility="Hidden"
+                       Style="{StaticResource font_style}"
+                       Text="Latest Baseline:"
+                       FontSize="24" IsEnabled="False"
+                
+                       
+            >
+            </TextBlock>
+
+        </Grid>
+
+
 
 
 
