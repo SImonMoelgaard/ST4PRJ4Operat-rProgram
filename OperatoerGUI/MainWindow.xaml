@@ -521,7 +521,7 @@
 
 
 
-            <lvc:CartesianChart  Grid.RowSpan="11" AnimationsSpeed ="0:0:0:1" Name="MeasurementChart"  RenderTransformOrigin="0.223,0.102" Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="3">
+            <lvc:CartesianChart  Grid.RowSpan="12" AnimationsSpeed ="0:0:0:1" Name="MeasurementChart"  RenderTransformOrigin="0.223,0.102" Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="3">
 
 
 
@@ -762,8 +762,8 @@
 
 
             <Button x:Name="Close_B" 
-                    Grid.Row="14"
-                    Grid.Column="6"
+                    Grid.Row="1"
+                    Grid.Column="5"
                     Style="{DynamicResource RoundCornerStop}" 
                     Foreground="White"
                     Background="Green"
@@ -773,7 +773,7 @@
                     Content="Close" 
                     Width="140"
                     HorizontalAlignment="Right"
-                    Margin="0,681,-3835,0" Click="Close_B_Click"  />
+                     Click="Close_B_Click"  />
 
             <TextBlock x:Name="LimitValueWarning_Label"
                        Grid.ColumnSpan="2"
