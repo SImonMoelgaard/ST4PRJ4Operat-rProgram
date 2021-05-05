@@ -17,7 +17,7 @@ namespace OperatoerLibrary.ProducerConsumer
         private string data = "";
         private string datavalue = "";
         private string[] dataList = new string[1];
-        public List<double> BreathingSamples = new List<double>();
+        public double BreathingSamples = new double();
         private BreathingValuesDataContainer datacontainer;
 
         /// <summary>
@@ -42,11 +42,11 @@ namespace OperatoerLibrary.ProducerConsumer
         /// </summary>
         public void GetOneBreathingValue()
         {
-            string log = "DIBH.txt";
+            string path = "DIBH.txt";
             
-            if (File.Exists(log))
+            if (File.Exists(path))
             {
-                data =  File.ReadAllText(log);
+                data =  File.ReadAllText(path);
                 dataList = data.Split(",");
             }
 
@@ -55,14 +55,16 @@ namespace OperatoerLibrary.ProducerConsumer
                 datavalue = VARIABLE.Replace("0\r\n", string.Empty);
                if (datavalue.Length >= 7)
                {
+                   Thread.Sleep(40);
                    var sample = decimal.Parse(datavalue, CultureInfo.InvariantCulture);
-                   
-                   BreathingSamples.Add(Convert.ToDouble(sample));
+
+                   BreathingSamples = Convert.ToDouble(sample);
                    datacontainer = new BreathingValuesDataContainer
                        {BreathingSample = BreathingSamples};
+                   _breathingData.Add(datacontainer);
                }
             }
-            _breathingData.Add(datacontainer);
+            
 
         }
 

@@ -56,7 +56,7 @@ namespace OperatoerGUI
         private DTO_Measurement DTO_Send;
 
         private double UpperGatingValue = -18, LowerGatingValue = -18.3;
-        private double UpperGatingValueAdjusted = 0, LowerGatingValueAdjusted = 0;
+        private double UpperGatingValueAdjusted = -18, LowerGatingValueAdjusted = -18.3;
         private double baseLine = 0;
         private DTO_GatingValues gatingValues;
 
@@ -67,6 +67,8 @@ namespace OperatoerGUI
          public event PropertyChangedEventHandler PropertyChangedtest;
          
          
+         
+        
 
          private List<DTO_Measurement> data;
          private Controller cr;
@@ -106,7 +108,10 @@ namespace OperatoerGUI
             cr.OpenPorts();
 
 
-             DataContext = this;
+            
+           
+
+            DataContext = this;
 
              
 
@@ -139,82 +144,72 @@ namespace OperatoerGUI
 
 
 
-        private List<double> value;
+        private double value;
 
         private void Read()
         {
-            cr.LoadData();
-            // Indlæser bare filen
-
+            cr.RunProducer();
             while (IsReading)
             {
-
-
                 
-
-
-                try
-                {
-                    BreathingValuesDataContainer data = _breathingData.Take();
-                    value = data.BreathingSample;
-                    
-
-                    //Metode der kaldes for at få data fra køen
-
-
-                    foreach (var VARIABLE in value)
+                    try
                     {
-                        Thread.Sleep(40);
-                        double dataPoint = cr.AdjustBaseLine(VARIABLE);
+                        BreathingValuesDataContainer data = _breathingData.Take();
+                        
+                        Console.ReadLine();
+                        value = data.BreathingSample;
+                   
 
-                        DTO_Send = new DTO_Measurement(dataPoint, LowerGatingValueAdjusted, UpperGatingValueAdjusted, DateTime.Now);
-                        //Husk at ændre til rigtige gating værdier
-                        cr.SendMeasurement(DTO_Send);
+                        //Metode der kaldes for at få data fra køen
+                        
+                            double dataPoint = cr.AdjustBaseLine(value);
 
-
-
-                        ChartValues.Add(new MeasurementModel
-                        {
-                            //time = ting i dto
-                            //Breathdata = ting i DTO
-
-                            Time = DateTime.Now,
-                            RawData = dataPoint
+                            DTO_Send = new DTO_Measurement(dataPoint, LowerGatingValueAdjusted, UpperGatingValueAdjusted, DateTime.Now);
+                            //Husk at ændre til rigtige gating værdier
+                            cr.SendMeasurement(DTO_Send);
 
 
 
+                            ChartValues.Add(new MeasurementModel
+                            {
+                                
 
-                        });
-
-                        SetAxisLimits(DateTime.Now);
-
-
-                        if (ChartValues.Count > 150)
-                        {
-                            ChartValues.RemoveAt(0);
-                        }
+                                Time = DateTime.Now,
+                                RawData = dataPoint
 
 
-                        this.Dispatcher.Invoke(() =>
-                        {
+
+
+                            });
+
+                            SetAxisLimits(DateTime.Now);
+
+
+                            if (ChartValues.Count > 150)
+                            {
+                                ChartValues.RemoveAt(0);
+                            }
+
+
+                            this.Dispatcher.Invoke(() =>
+                            {
                             
 
 
-                        });
+                            });
                         
+                        
+
+                   
+
+
                     }
-
-
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
-
-
-
+                    catch (InvalidOperationException)
+                    {
+                    
+                    }
+                
+                
 
             }
         }
@@ -265,18 +260,24 @@ namespace OperatoerGUI
 
         private void Start_B_Click_1(object sender, RoutedEventArgs e)
         {
-            IsReading = !IsReading;
+            IsReading = true;
             if (IsReading) Task.Factory.StartNew(Read);
 
             Stop_B.Visibility = Visibility.Visible;
             Start_B.Visibility = Visibility.Hidden;
+            Start_B_gray.Visibility = Visibility.Visible;
+            Stop_B_gray.Visibility = Visibility.Hidden;
+            
         }
 
         private void Stop_B_Click_1(object sender, RoutedEventArgs e)
         {
             IsReading = false;
+            
             Start_B.Visibility = Visibility.Visible;
             Stop_B.Visibility = Visibility.Hidden;
+            Stop_B_gray.Visibility = Visibility.Visible;
+            Start_B_gray.Visibility = Visibility.Hidden;
         }
 
         private void UpperLimit_TB_GotFocus(object sender, RoutedEventArgs e)
@@ -313,15 +314,18 @@ namespace OperatoerGUI
 
 
             cr.SendGUIInfo(guiType);
+
+            PatientInterface_L.Visibility = Visibility.Visible;
+
         }
 
         private void AdjustBaseLine_B_Click(object sender, RoutedEventArgs e)
         {
             baseLine = cr.AdjustBaseLine();
-            LastBaseLine_TB.Text = Convert.ToString(baseLine);
+            CurrentBaseline_TB.Text = Convert.ToString(baseLine);
             AdjustGatingValues();
         }
-
+        
         private void Adjust_Limit_B_Click(object sender, RoutedEventArgs e)
         {
             if (UpperLimit_TB.Text != null && LowerLimit_TB.Text != null)

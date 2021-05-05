@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using OperatoerLibrary.DTO;
 using OperatoerLibrary.Filters;
 using OperatoerLibrary.ProducerConsumer;
@@ -16,6 +17,7 @@ namespace OperatoerLibrary
         private IGatingArea gatingArea = new GatingArea();
         private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData;
         private DTO_GatingValues gatingValues;
+        private Thread loadDataThread;
 
         /// <summary>
         /// CTOR, Recieves datacontainer from mainWindow.
@@ -46,11 +48,12 @@ namespace OperatoerLibrary
         }
 
         /// <summary>
-        /// Loads datafile for the application
+        /// Runs the producer
         /// </summary>
-        public void LoadData()
+        public void RunProducer()
         {
-             producer.Run();
+            loadDataThread = new Thread(producer.Run);
+            loadDataThread.Start();
         }
 
         /// <summary>
