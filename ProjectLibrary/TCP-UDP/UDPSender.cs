@@ -47,7 +47,7 @@ namespace OperatoerLibrary
         /// </param>
         public void SendGuiInfo(int guiInfo)
         {
-            SingledataEP = new IPEndPoint(broadCastIP, 11000);
+            SingledataEP = new IPEndPoint(broadCastIP, 11001);
 
 
             var json = JsonConvert.SerializeObject(guiInfo);

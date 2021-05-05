@@ -326,8 +326,8 @@ namespace OperatoerGUI
         {
             if (UpperLimit_TB.Text != null && LowerLimit_TB.Text != null)
             {
-                string result = cr.SaveGatingArea(Convert.ToDouble(UpperLimit_TB.Text),
-                    Convert.ToDouble(LowerLimit_TB.Text));
+                string result = cr.SaveGatingArea(Convert.ToDouble(LowerLimit_TB.Text),
+                    Convert.ToDouble(UpperLimit_TB.Text));
                 if (result == "Succes")
                 {
                     UpperGatingValue = Convert.ToDouble(UpperLimit_TB.Text);

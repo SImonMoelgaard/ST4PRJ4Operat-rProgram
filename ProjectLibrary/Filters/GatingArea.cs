@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using OperatoerLibrary.DTO;
+﻿using OperatoerLibrary.DTO;
 
 namespace OperatoerLibrary.Filters
 {
@@ -11,7 +8,7 @@ namespace OperatoerLibrary.Filters
         
         public string SaveGatingArea(double lowerGating, double higherGating)
         {
-            
+            gatingValue = new DTO_GatingValues(0, 0);
             if (lowerGating > higherGating)
             {
                 return "Lower value cannot be higher than higher value";
@@ -24,12 +21,14 @@ namespace OperatoerLibrary.Filters
             {
                 return "Value cannot be 0";
             }
-            else
+            else if (higherGating>lowerGating)
             {
                 gatingValue = new DTO_GatingValues(higherGating, lowerGating);
                 return "Success";
-                
+
             }
+
+            return "none";
         }
 
         public DTO_GatingValues GetGatingValue()
