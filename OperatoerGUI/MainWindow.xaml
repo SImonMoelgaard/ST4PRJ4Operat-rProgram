@@ -663,7 +663,7 @@
 
 
             <TextBox x:Name="LowerLimit_TB"
-                 Grid.Column="2"
+                 Grid.Column="1"
                  Grid.Row="7"
                  Width="140"
                      
@@ -676,7 +676,7 @@
         />
 
             <TextBox x:Name="UpperLimit_TB"
-                     Grid.Column="1"
+                     Grid.Column="2"
                      Grid.Row="7"
                      Width="140"
                      
