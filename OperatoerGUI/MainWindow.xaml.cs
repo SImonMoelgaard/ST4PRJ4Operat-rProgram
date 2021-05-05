@@ -307,7 +307,7 @@ namespace OperatoerGUI
             var selected = PatientGUI_cb.Text;
             int guiType = 1;
             if (selected == "Standard") { guiType = 1; }
-            else if (selected == "Jul") { guiType = 2;}
+            else if (selected == "Christmas") { guiType = 2;}
             
 
 
