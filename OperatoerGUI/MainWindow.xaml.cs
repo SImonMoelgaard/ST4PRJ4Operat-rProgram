@@ -6,6 +6,7 @@ using System.ComponentModel.Design;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading;
@@ -23,7 +24,8 @@ using LiveCharts.Wpf;
 using OperatoerLibrary;
 using OperatoerLibrary.DTO;
 using OperatoerLibrary.ProducerConsumer;
-
+using OperatoerLibrary.Timer;
+using CountDownTimer = OperatoerLibrary.Timer.CountDownTimer;
 
 
 namespace OperatoerGUI
@@ -37,6 +39,11 @@ namespace OperatoerGUI
         /// <summary>
         /// Chart Axis
         /// </summary>
+        private double TimeRemaining { get; set; }
+
+        private double CountUpTimer;
+
+        private string TimeElapsed;
         private double axisMax;
         private double axisMin;
         //private double yAxisMax;
@@ -72,6 +79,8 @@ namespace OperatoerGUI
 
          private List<DTO_Measurement> data;
          private Controller cr;
+         private ICountDownTimer countDownTimer = new CountDownTimer();
+         private ICountUpTimer countUpTimer = new CountUpTimer();
          private double _trend;
          public SeriesCollection LastHourSeries { get; set; }
          private double _lastLecture;
@@ -82,7 +91,7 @@ namespace OperatoerGUI
              InitializeComponent();
              
              cr = new Controller(_breathingData);
-
+             
              var mapper = Mappers.Xy<MeasurementModel>()
                  .X(model => model.Time.Ticks)
                  .Y(model => model.RawData);
@@ -107,7 +116,9 @@ namespace OperatoerGUI
 
             cr.OpenPorts();
 
-
+            countDownTimer.Expired += new EventHandler(OnTimerExpired);
+            countDownTimer.TimerTick += new EventHandler(OnTimerTick);
+            countUpTimer.TimerTick+=new EventHandler(TimeLasted);
             
            
 
@@ -165,6 +176,7 @@ namespace OperatoerGUI
                             double dataPoint = cr.AdjustBaseLine(value);
 
                             DTO_Send = new DTO_Measurement(dataPoint, LowerGatingValueAdjusted, UpperGatingValueAdjusted, DateTime.Now);
+                            countDownTimer.Start(dataPoint, LowerGatingValue, UpperGatingValue);
                             //Husk at ændre til rigtige gating værdier
                             cr.SendMeasurement(DTO_Send);
 
@@ -193,7 +205,8 @@ namespace OperatoerGUI
 
                             this.Dispatcher.Invoke(() =>
                             {
-                            
+                                TimeRemaining_TB.Text = Convert.ToString(TimeRemaining);
+                                TimeElapsed_TB.Text = Convert.ToString(TimeElapsed);
 
 
                             });
@@ -262,7 +275,7 @@ namespace OperatoerGUI
         {
             IsReading = true;
             if (IsReading) Task.Factory.StartNew(Read);
-
+            countUpTimer.Start();
             Stop_B.Visibility = Visibility.Visible;
             Start_B.Visibility = Visibility.Hidden;
             Start_B_gray.Visibility = Visibility.Visible;
@@ -273,7 +286,7 @@ namespace OperatoerGUI
         private void Stop_B_Click_1(object sender, RoutedEventArgs e)
         {
             IsReading = false;
-            
+            countUpTimer.Stop();
             Start_B.Visibility = Visibility.Visible;
             Stop_B.Visibility = Visibility.Hidden;
             Stop_B_gray.Visibility = Visibility.Visible;
@@ -323,6 +336,7 @@ namespace OperatoerGUI
         {
             baseLine = cr.AdjustBaseLine();
             CurrentBaseline_TB.Text = Convert.ToString(baseLine);
+
             AdjustGatingValues();
         }
         
@@ -332,13 +346,17 @@ namespace OperatoerGUI
             {
                 string result = cr.SaveGatingArea(Convert.ToDouble(LowerLimit_TB.Text),
                     Convert.ToDouble(UpperLimit_TB.Text));
-                if (result == "Succes")
+                if (result == "Success")
                 {
-                    UpperGatingValue = Convert.ToDouble(UpperLimit_TB.Text);
-                    LowerGatingValue = Convert.ToDouble(LowerLimit_TB.Text);
+                    var sampleUpper = decimal.Parse(UpperLimit_TB.Text, CultureInfo.InvariantCulture);
+                    var sampleLower = decimal.Parse(LowerLimit_TB.Text, CultureInfo.InvariantCulture);
+                    
+                    UpperGatingValue = Convert.ToDouble(sampleUpper);
+                    LowerGatingValue = Convert.ToDouble(sampleLower);
                     AdjustGatingValues();
                     LimitValueWarning_Label.Text = result;
                     LimitValueWarning_Label.Visibility = Visibility.Visible;
+                    CurrentGatingValues_TB.Text = Convert.ToString(LowerGatingValue + " - " + UpperGatingValue);
                 }
                 else
                 {
@@ -361,6 +379,19 @@ namespace OperatoerGUI
             Environment.Exit(0);
         }
 
+        private void AdjustBaseLinemanual_B_Click(object sender, RoutedEventArgs e)
+        {
+            baseLine = Convert.ToDouble(ManualBaseLine_TB.Text);
+            CurrentBaseline_TB.Text = baseLine.ToString();
+        }
+
+        private void TimeToTreat_B_Click(object sender, RoutedEventArgs e)
+        {
+            double time = Convert.ToDouble(TimeToTreat_TB.Text);
+            TimeRemaining_TB.Text = Convert.ToString(time);
+            countDownTimer.SetTime(time);
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null)
@@ -379,6 +410,43 @@ namespace OperatoerGUI
             {
                 a.Text = text;
             }
+
+        }
+
+        public void OnTimerExpired(object sender, EventArgs e)
+        {
+            //if (isCooking)
+            //{
+            //    isCooking = false;
+            //    myPowerTube.TurnOff();
+            //    UI.CookingIsDone();
+            //}
+        }
+
+        public void OnTimerTick(object sender, EventArgs e)
+        {
+            TimeRemaining = countDownTimer.RemainingTime;
+        }
+        
+        public void TimeLasted(object sender, EventArgs e)
+        {
+            TimeElapsed = "";
+            int time = countUpTimer.TimeRemaining;
+            int minutes = time / 60;
+            int Seconds = time % 60;
+
+            
+            if (minutes<=9)
+            {
+                TimeElapsed += string.Join("","0");
+            }
+            TimeElapsed += string.Join("",minutes);
+            TimeElapsed += string.Join("",":");
+            if (Seconds<=9)
+            {
+                TimeElapsed += string.Join("","0");
+            }
+            TimeElapsed += string.Join("",Seconds);
 
         }
 

@@ -695,14 +695,37 @@
                      Grid.ColumnSpan="2"
                      Width="150"
                      
-                     Text="Lower limit"
+                     Text=""
                      Foreground="Gray"
                      
                      
-                     Style="{StaticResource roundcornerTextboxwithbordereffect}" LostFocus="LowerLimit_TB_LostFocus" GotFocus="LowerLimit_TB_GotFocus" RenderTransformOrigin="175758.132,160850.191" 
+                     Style="{StaticResource roundcornerTextboxwithbordereffect}"  RenderTransformOrigin="175758.132,160850.191" 
          
             />
-
+            <TextBlock x:Name="TimeElaspsed_L"
+                       Grid.ColumnSpan="3"
+                       Grid.Row="6"
+                       Grid.Column="7"     
+                       Style="{StaticResource font_style}"
+                       Text="Time Left:"
+                       FontSize="24"
+                
+                       
+            >
+            </TextBlock>
+            <TextBox x:Name="TimeElapsed_TB"
+                     Grid.Column="7"
+                     Grid.Row="7"
+                     Grid.ColumnSpan="2"
+                     Width="150"
+                     
+                     Text=""
+                     Foreground="Gray"
+                     
+                     
+                     Style="{StaticResource roundcornerTextboxwithbordereffect}"   RenderTransformOrigin="175758.132,160850.191" 
+         
+            />
             <TextBlock x:Name="CurrentBaseLine_B"
                        Grid.ColumnSpan="3"
                        Grid.Row="6"
@@ -720,7 +743,7 @@
                      Grid.ColumnSpan="2"
                      Width="150"
                      
-                     Text="Lower limit"
+                     Text="Not set"
                      Foreground="Gray"
                      
                      
@@ -861,7 +884,7 @@
                     Content="Select"
                     Width="140"
                     HorizontalAlignment="Left"
-                    Margin="5" Click="Select_B_Click"   />
+                    Margin="5" Click="TimeToTreat_B_Click"   />
             <ComboBox x:Name="PatientGUI_cb"
                   Grid.Column="1"
                   Grid.Row="4"
@@ -1030,7 +1053,7 @@
                     VerticalAlignment="Center" 
                     Content="Adjust Baseline Manually"
                     Width="290"
-                    HorizontalAlignment="Left" Click="AdjustBaseLine_B_Click"
+                    HorizontalAlignment="Left" Click="AdjustBaseLinemanual_B_Click" 
             />
 
 
