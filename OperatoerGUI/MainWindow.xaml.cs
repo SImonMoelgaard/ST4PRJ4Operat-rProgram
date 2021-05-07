@@ -175,7 +175,7 @@ namespace OperatoerGUI
                         
                             double dataPoint = cr.AdjustBaseLine(value);
 
-                            DTO_Send = new DTO_Measurement(dataPoint, LowerGatingValueAdjusted, UpperGatingValueAdjusted, DateTime.Now);
+                            DTO_Send = new DTO_Measurement(dataPoint, LowerGatingValue, UpperGatingValue, DateTime.Now);
                             countDownTimer.Start(dataPoint, LowerGatingValue, UpperGatingValue);
                             //Husk at ændre til rigtige gating værdier
                             cr.SendMeasurement(DTO_Send);

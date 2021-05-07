@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:OperatoerGUI"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MeasurementWindow" Height="720" Width="1280">
+        Title="MeasurementWindow" Height="720" Width="1290">
 
     <Window.Resources>
         <!--Textbox Template-->
@@ -581,7 +581,7 @@
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="150"/>
                 
-                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="10"/>
