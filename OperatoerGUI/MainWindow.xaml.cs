@@ -62,8 +62,8 @@ namespace OperatoerGUI
 
         private DTO_Measurement DTO_Send;
 
-        private double UpperGatingValue = -18, LowerGatingValue = -18.3;
-        private double UpperGatingValueAdjusted = -18, LowerGatingValueAdjusted = -18.3;
+        private double UpperGatingValue = 0.5, LowerGatingValue = 0.4;
+        private double UpperGatingValueAdjusted = 0.5, LowerGatingValueAdjusted = 0.4;
         private double baseLine = 0;
         private DTO_GatingValues gatingValues;
 
@@ -329,7 +329,7 @@ namespace OperatoerGUI
             cr.SendGUIInfo(guiType);
 
             PatientInterface_L.Visibility = Visibility.Visible;
-
+            PatientGUI_cb.Text = "";
         }
 
         private void AdjustBaseLine_B_Click(object sender, RoutedEventArgs e)

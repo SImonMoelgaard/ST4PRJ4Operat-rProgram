@@ -681,7 +681,7 @@
             <TextBlock x:Name="TimeRemaining_L"
                        Grid.ColumnSpan="3"
                        Grid.Row="6"
-                       Grid.Column="5"     
+                       Grid.Column="13"     
                        Style="{StaticResource font_style}"
                        Text="Time Left:"
                        FontSize="24"
@@ -690,7 +690,7 @@
             >
             </TextBlock>
             <TextBox x:Name="TimeRemaining_TB"
-                     Grid.Column="5"
+                     Grid.Column="13"
                      Grid.Row="7"
                      Grid.ColumnSpan="2"
                      Width="150"
@@ -705,16 +705,16 @@
             <TextBlock x:Name="TimeElaspsed_L"
                        Grid.ColumnSpan="3"
                        Grid.Row="6"
-                       Grid.Column="7"     
+                       Grid.Column="15"     
                        Style="{StaticResource font_style}"
-                       Text="Time Left:"
+                       Text="Time Elapsed:"
                        FontSize="24"
                 
                        
             >
             </TextBlock>
             <TextBox x:Name="TimeElapsed_TB"
-                     Grid.Column="7"
+                     Grid.Column="15"
                      Grid.Row="7"
                      Grid.ColumnSpan="2"
                      Width="150"
@@ -753,7 +753,7 @@
             <TextBlock x:Name="CurrentGatingValues_L"
                        Grid.ColumnSpan="3"
                        Grid.Row="6"
-                       Grid.Column="13"     
+                       Grid.Column="5"     
                        Style="{StaticResource font_style}"
                        Text="Current Gating Values:"
                        FontSize="24"
@@ -763,7 +763,7 @@
             </TextBlock>
 
             <TextBox x:Name="CurrentGatingValues_TB"
-                     Grid.Column="13
+                     Grid.Column="5
                      "
                      Grid.Row="7"
                      Grid.ColumnSpan="4"
@@ -915,12 +915,12 @@
 
             <TextBlock x:Name="PatientInterface_L"
                        Grid.ColumnSpan="3"
-                       Grid.Row="6"
+                       Grid.Row="4"
                        Grid.Column="1" 
                        Foreground="LawnGreen"
                        Visibility="Hidden"
                        Style="{StaticResource font_style}"
-                       Text="Succes"
+                       Text="     Succes"
                        FontSize="24" IsEnabled="False"
                 
                        
