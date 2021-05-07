@@ -96,5 +96,10 @@ namespace OperatoerLibrary
             gatingValues = gatingArea.GetGatingValue();
             return gatingValues;
         }
+
+        public void SaveBaseLineValue(double baseline)
+        {
+            baseLineFilter.SaveBaseLine(baseline);
+        }
     }
 }

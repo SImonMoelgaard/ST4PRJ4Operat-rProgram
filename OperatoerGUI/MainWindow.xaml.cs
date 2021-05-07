@@ -23,6 +23,7 @@ using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using OperatoerLibrary;
 using OperatoerLibrary.DTO;
+using OperatoerLibrary.Filters;
 using OperatoerLibrary.ProducerConsumer;
 using OperatoerLibrary.Timer;
 using CountDownTimer = OperatoerLibrary.Timer.CountDownTimer;
@@ -63,7 +64,6 @@ namespace OperatoerGUI
         private DTO_Measurement DTO_Send;
 
         private double UpperGatingValue = 0.5, LowerGatingValue = 0.4;
-        private double UpperGatingValueAdjusted = 0.5, LowerGatingValueAdjusted = 0.4;
         private double baseLine = 0;
         private DTO_GatingValues gatingValues;
 
@@ -258,8 +258,8 @@ namespace OperatoerGUI
         private void AdjustGatingValues()
         {
             
-            UpperGatingValueAdjusted = UpperGatingValue - baseLine;
-            LowerGatingValueAdjusted = LowerGatingValue - baseLine;
+            UpperGatingValue = UpperGatingValue - baseLine;
+            LowerGatingValue = LowerGatingValue - baseLine;
 
         }
 
@@ -382,6 +382,7 @@ namespace OperatoerGUI
         private void AdjustBaseLinemanual_B_Click(object sender, RoutedEventArgs e)
         {
             baseLine = Convert.ToDouble(ManualBaseLine_TB.Text);
+            cr.SaveBaseLineValue(baseLine);
             CurrentBaseline_TB.Text = baseLine.ToString();
         }
 

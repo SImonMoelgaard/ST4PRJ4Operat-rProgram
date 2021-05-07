@@ -90,6 +90,10 @@ namespace OperatoerLibrary.Filters
             }
         }
 
+        public void SaveBaseLine(double baseLine)
+        {
+            baseLineValue = baseLine;
+        }
 
 
 
