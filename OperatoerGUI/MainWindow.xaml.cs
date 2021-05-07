@@ -381,7 +381,8 @@ namespace OperatoerGUI
 
         private void AdjustBaseLinemanual_B_Click(object sender, RoutedEventArgs e)
         {
-            baseLine = Convert.ToDouble(ManualBaseLine_TB.Text);
+            var sample = decimal.Parse(ManualBaseLine_TB.Text, CultureInfo.InvariantCulture);
+            baseLine = Convert.ToDouble(sample);
             cr.SaveBaseLineValue(baseLine);
             CurrentBaseline_TB.Text = baseLine.ToString();
         }
