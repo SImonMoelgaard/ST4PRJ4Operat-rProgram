@@ -45,6 +45,7 @@ namespace OperatoerGUI
         private double CountUpTimer;
 
         private string TimeElapsed;
+        private string timeRemaining;
         private double axisMax;
         private double axisMin;
         //private double yAxisMax;
@@ -120,7 +121,7 @@ namespace OperatoerGUI
             countDownTimer.TimerTick += new EventHandler(OnTimerTick);
             countUpTimer.TimerTick+=new EventHandler(TimeLasted);
             
-           
+            cr.RunProducer();
 
             DataContext = this;
 
@@ -159,7 +160,7 @@ namespace OperatoerGUI
 
         private void Read()
         {
-            cr.RunProducer();
+            
             while (IsReading)
             {
                 
@@ -205,12 +206,25 @@ namespace OperatoerGUI
 
                             this.Dispatcher.Invoke(() =>
                             {
-                                TimeRemaining_TB.Text = Convert.ToString(TimeRemaining);
+                                TimeRemaining_TB.Text = Convert.ToString(timeRemaining);
                                 TimeElapsed_TB.Text = Convert.ToString(TimeElapsed);
 
+                                if (AutoBaseLineWarning_L.Visibility == Visibility.Visible|| ManualBaseLineWarning_L.Visibility == Visibility.Visible || LimitValueWarning_Label.Visibility == Visibility.Visible)
+                                {
+                                    count++;
+                                    if (count>=150)
+                                    {
+                                        AutoBaseLineWarning_L.Visibility = Visibility.Hidden;
+                                        ManualBaseLineWarning_L.Visibility = Visibility.Hidden;
+                                        LimitValueWarning_Label.Visibility = Visibility.Hidden;
+                                        count = 0;
+                                    } 
+                                }
 
                             });
-                        
+                            
+                          
+                            
                         
 
                    
@@ -335,14 +349,21 @@ namespace OperatoerGUI
         private void AdjustBaseLine_B_Click(object sender, RoutedEventArgs e)
         {
             baseLine = cr.AdjustBaseLine();
-            CurrentBaseline_TB.Text = Convert.ToString(baseLine);
+            
+            
+            var formattedBaseLine = baseLine.ToString("0.000", CultureInfo.CreateSpecificCulture("da-DK"));
+            formattedBaseLine = formattedBaseLine.Replace(",", ".");
+            ManualBaseLine_TB.Text = formattedBaseLine;
+            CurrentBaseline_TB.Text = formattedBaseLine;
+            AutoBaseLineWarning_L.Text = "Success";
+            AutoBaseLineWarning_L.Visibility = Visibility.Visible;
 
-           // AdjustGatingValues();
+            // AdjustGatingValues();
         }
         
         private void Adjust_Limit_B_Click(object sender, RoutedEventArgs e)
         {
-            if (UpperLimit_TB.Text != null && LowerLimit_TB.Text != null)
+            if (UpperLimit_TB.Text != "Upper limit" && LowerLimit_TB.Text != "Lower limit")
             {
                 string result = cr.SaveGatingArea(Convert.ToDouble(LowerLimit_TB.Text),
                     Convert.ToDouble(UpperLimit_TB.Text));
@@ -355,22 +376,34 @@ namespace OperatoerGUI
                     LowerGatingValue = Convert.ToDouble(sampleLower);
                     //AdjustGatingValues();
                     LimitValueWarning_Label.Text = result;
+                    LimitValueWarning_Label.Foreground = Brushes.LawnGreen;
                     LimitValueWarning_Label.Visibility = Visibility.Visible;
                     CurrentGatingValues_TB.Text = Convert.ToString(LowerGatingValue + " - " + UpperGatingValue);
+                    
                 }
                 else
                 {
-                    gatingValues = cr.GetGatingValue();
-                    UpperLimit_TB.Text = Convert.ToString(gatingValues.UpperGatingValue);
-                    LowerLimit_TB.Text = Convert.ToString(gatingValues.LowerGatingValue);
-                    LimitValueWarning_Label.Text = result;
-                    LimitValueWarning_Label.Visibility = Visibility.Visible;
-                    
+                    try
+                    {
+                        gatingValues = cr.GetGatingValue();
+                        UpperLimit_TB.Text = Convert.ToString(gatingValues.UpperGatingValue);
+                        LowerLimit_TB.Text = Convert.ToString(gatingValues.LowerGatingValue);
+                        LimitValueWarning_Label.Text = result;
+                        LimitValueWarning_Label.Visibility = Visibility.Visible;
+                        LimitValueWarning_Label.Foreground = Brushes.Red;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        
+                        throw;
+                    }
                 }
-
-
-                
-                
+            }
+            else
+            {
+                LimitValueWarning_Label.Text = "Enter Values";
+                LimitValueWarning_Label.Visibility = Visibility.Visible;
+                LimitValueWarning_Label.Foreground = Brushes.Red;
             }
         }
 
@@ -384,13 +417,35 @@ namespace OperatoerGUI
             var sample = decimal.Parse(ManualBaseLine_TB.Text, CultureInfo.InvariantCulture);
             baseLine = Convert.ToDouble(sample);
             cr.SaveBaseLineValue(baseLine);
-            CurrentBaseline_TB.Text = baseLine.ToString();
+            var formattedBaseLine = baseLine.ToString("0.000");
+            CurrentBaseline_TB.Text = formattedBaseLine;
+            ManualBaseLineWarning_L.Text = "Success";
+            ManualBaseLineWarning_L.Visibility = Visibility.Visible;
         }
 
         private void TimeToTreat_B_Click(object sender, RoutedEventArgs e)
         {
-            double time = Convert.ToDouble(TimeToTreat_TB.Text);
-            TimeRemaining_TB.Text = Convert.ToString(time);
+            
+            int time = Convert.ToInt32(TimeToTreat_TB.Text);
+            int minutes = time / 60;
+            int seconds = time % 60;
+            string timer ="";
+            
+            if (minutes<=9)
+            {
+                timer += string.Join("","0");
+            }
+            timer  += string.Join("",minutes);
+            timer += string.Join("",":");
+            if (seconds<=9)
+            {
+                timer += string.Join("","0");
+            }
+            timer += string.Join("",seconds);
+
+
+
+            TimeRemaining_TB.Text = Convert.ToString(timer);
             countDownTimer.SetTime(time);
         }
 
@@ -417,25 +472,71 @@ namespace OperatoerGUI
 
         public void OnTimerExpired(object sender, EventArgs e)
         {
-            //if (isCooking)
-            //{
-            //    isCooking = false;
-            //    myPowerTube.TurnOff();
-            //    UI.CookingIsDone();
-            //}
+            IsReading = false;
+            countUpTimer.Stop();
+            Start_B.Visibility = Visibility.Visible;
+            Stop_B.Visibility = Visibility.Hidden;
+            Stop_B_gray.Visibility = Visibility.Visible;
+            Start_B_gray.Visibility = Visibility.Hidden;
         }
 
         public void OnTimerTick(object sender, EventArgs e)
         {
-            TimeRemaining = countDownTimer.RemainingTime;
+            timeRemaining = "";
+            double time = countDownTimer.RemainingTime;
+            int timeInt = Convert.ToInt32(time);
+            int minutes = timeInt / 60;
+            double seconds = time % 60;
+         
+
+            
+            if (minutes<=9)
+            {
+                timeRemaining += string.Join("","0");
+            }
+            timeRemaining += string.Join("",minutes);
+            timeRemaining += string.Join("",":");
+            if (seconds<=9)
+            {
+                
+                timeRemaining += string.Join("","0");
+            }
+            //string.Format("{0:N3}", seconds);
+            //seconds.ToString("N3");
+            var formattedSeconds = seconds.ToString("0.000");
+            timeRemaining += string.Join("",formattedSeconds);
+
+
+
         }
-        
+
+        private void TimeToTreat_TB_GotFocus(object sender, RoutedEventArgs e)
+        {
+            GotLostFocus(TimeToTreat_TB, "Seconds");
+        }
+
+        private void TimeToTreat_TB_LostFocus(object sender, RoutedEventArgs e)
+        {
+            GotLostFocus(TimeToTreat_TB, "Seconds");
+        }
+
+        private void ManualBaseLine_TB_LostFocus(object sender, RoutedEventArgs e)
+        {
+            GotLostFocus(ManualBaseLine_TB, "Input Baseline");
+        }
+
+        private void ManualBaseLine_TB_GotFocus(object sender, RoutedEventArgs e)
+        {
+            GotLostFocus(ManualBaseLine_TB, "Input Baseline");
+        }
+
+        private int count;
         public void TimeLasted(object sender, EventArgs e)
         {
             TimeElapsed = "";
             int time = countUpTimer.TimeRemaining;
             int minutes = time / 60;
-            int Seconds = time % 60;
+            int seconds = time % 60;
 
             
             if (minutes<=9)
@@ -444,12 +545,14 @@ namespace OperatoerGUI
             }
             TimeElapsed += string.Join("",minutes);
             TimeElapsed += string.Join("",":");
-            if (Seconds<=9)
+            if (seconds<=9)
             {
                 TimeElapsed += string.Join("","0");
             }
-            TimeElapsed += string.Join("",Seconds);
+            TimeElapsed += string.Join("",seconds);
 
+
+            
         }
 
     }
