@@ -337,7 +337,7 @@ namespace OperatoerGUI
             baseLine = cr.AdjustBaseLine();
             CurrentBaseline_TB.Text = Convert.ToString(baseLine);
 
-            AdjustGatingValues();
+           // AdjustGatingValues();
         }
         
         private void Adjust_Limit_B_Click(object sender, RoutedEventArgs e)
@@ -353,7 +353,7 @@ namespace OperatoerGUI
                     
                     UpperGatingValue = Convert.ToDouble(sampleUpper);
                     LowerGatingValue = Convert.ToDouble(sampleLower);
-                    AdjustGatingValues();
+                    //AdjustGatingValues();
                     LimitValueWarning_Label.Text = result;
                     LimitValueWarning_Label.Visibility = Visibility.Visible;
                     CurrentGatingValues_TB.Text = Convert.ToString(LowerGatingValue + " - " + UpperGatingValue);
