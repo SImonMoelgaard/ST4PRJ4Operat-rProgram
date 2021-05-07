@@ -622,7 +622,7 @@
             </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="14" Grid.ColumnSpan="1" Grid.RowSpan="3" Background="Black">
             </StackPanel>
-            <lvc:CartesianChart  Grid.RowSpan="13" AnimationsSpeed ="0:0:0:1" Name="MeasurementChart"  RenderTransformOrigin="0.223,0.102" Grid.Column="5" Grid.Row="8" Grid.ColumnSpan="11">
+            <lvc:CartesianChart  Grid.RowSpan="12" AnimationsSpeed ="0:0:0:1" Name="MeasurementChart"  RenderTransformOrigin="0.223,0.102" Grid.Column="5" Grid.Row="8" Grid.ColumnSpan="11">
 
 
 
