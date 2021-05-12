@@ -6,7 +6,7 @@ namespace OperatoerLibrary.Timer
 {
     public class CountUpTimer : ICountUpTimer
     {
-        public int TimeRemaining { get; private set; }
+        public int countedTime { get; private set; }
         public event EventHandler TimerTick;
 
 
@@ -31,7 +31,7 @@ namespace OperatoerLibrary.Timer
         private void OnTimerEvent(object sender, System.Timers.ElapsedEventArgs args)
         {
             
-            TimeRemaining++; 
+            countedTime++; 
 
             TimerTick?.Invoke(this, EventArgs.Empty);
 

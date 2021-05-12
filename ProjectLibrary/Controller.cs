@@ -11,7 +11,7 @@ namespace OperatoerLibrary
     public class Controller
     {
         
-        private IProducer producer;
+        private IAltitudeSensor producer;
         private IBaseLineFilter baseLineFilter = new BaselineFilter();
         private IUDPSender udpSender = new UDPSender();
         private IGatingArea gatingArea = new GatingArea();
@@ -26,7 +26,7 @@ namespace OperatoerLibrary
         public Controller(BlockingCollection<BreathingValuesDataContainer> datacontainer)
         {
             _breathingData = datacontainer; 
-          producer = new Producer(_breathingData);
+          producer = new AltitudeSensor(_breathingData);
 
 
         }

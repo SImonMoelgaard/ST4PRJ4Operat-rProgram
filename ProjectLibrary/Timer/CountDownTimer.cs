@@ -57,10 +57,6 @@ namespace OperatoerLibrary.Timer
             
         }
 
-        public void Stop()
-        {
-            timer.Enabled = false;
-        }
         private void Expire()
         {
             timer.Enabled = false;

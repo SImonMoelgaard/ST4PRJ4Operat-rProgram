@@ -6,7 +6,7 @@ namespace OperatoerLibrary.Timer
 {
     public interface ICountUpTimer
     {
-        int TimeRemaining { get; }
+        int countedTime { get; }
         
         event EventHandler TimerTick;
         

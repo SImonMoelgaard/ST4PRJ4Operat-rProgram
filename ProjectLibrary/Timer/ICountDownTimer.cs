@@ -13,6 +13,6 @@ namespace OperatoerLibrary.Timer
         
         public void SetTime(double time);
         public void Start(double dataPoint, double lowerGating, double higherGating);
-        void Stop();
+        
     }
 }

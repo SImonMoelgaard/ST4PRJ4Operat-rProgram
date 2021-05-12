@@ -10,7 +10,7 @@ namespace OperatoerLibrary
     {
         private IPAddress broadCastIP;
         private IPEndPoint endPointIP;
-        private IPEndPoint SingledataEP;
+        private IPEndPoint singleDataEP;
         private readonly int port = 11000;
         private Socket socket;
 
@@ -47,13 +47,13 @@ namespace OperatoerLibrary
         /// </param>
         public void SendGuiInfo(int guiInfo)
         {
-            SingledataEP = new IPEndPoint(broadCastIP, 11001);
+            singleDataEP = new IPEndPoint(broadCastIP, 11001);
 
 
             var json = JsonConvert.SerializeObject(guiInfo);
             var sendData = Encoding.ASCII.GetBytes(json);
             
-            socket.SendTo(sendData, SingledataEP);
+            socket.SendTo(sendData, singleDataEP);
             
             
             

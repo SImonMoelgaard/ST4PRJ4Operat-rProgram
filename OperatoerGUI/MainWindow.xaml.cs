@@ -40,11 +40,9 @@ namespace OperatoerGUI
         /// <summary>
         /// Chart Axis
         /// </summary>
-        private double TimeRemaining { get; set; }
+        
 
-        private double CountUpTimer;
-
-        private string TimeElapsed;
+        private string timeElapsed;
         private string timeRemaining;
         private double axisMax;
         private double axisMin;
@@ -69,23 +67,16 @@ namespace OperatoerGUI
         private DTO_GatingValues gatingValues;
 
          BlockingCollection<BreathingValuesDataContainer> _datacollection = new BlockingCollection<BreathingValuesDataContainer>();
-         
-         
-        
-         public event PropertyChangedEventHandler PropertyChangedtest;
-         
-         
+         public event PropertyChangedEventHandler PropertyChanged;
          
         
-
-         private List<DTO_Measurement> data;
          private Controller cr;
          private ICountDownTimer countDownTimer = new CountDownTimer();
          private ICountUpTimer countUpTimer = new CountUpTimer();
-         private double _trend;
-         public SeriesCollection LastHourSeries { get; set; }
-         private double _lastLecture;
-
+         
+         private double value;
+         
+         private int count;
          
          public MainWindow ()
          {
@@ -156,7 +147,7 @@ namespace OperatoerGUI
 
 
 
-        private double value;
+        
 
         private void Read()
         {
@@ -207,7 +198,7 @@ namespace OperatoerGUI
                             this.Dispatcher.Invoke(() =>
                             {
                                 TimeRemaining_TB.Text = Convert.ToString(timeRemaining);
-                                TimeElapsed_TB.Text = Convert.ToString(TimeElapsed);
+                                TimeElapsed_TB.Text = Convert.ToString(timeElapsed);
 
                                 if (AutoBaseLineWarning_L.Visibility == Visibility.Visible|| ManualBaseLineWarning_L.Visibility == Visibility.Visible || LimitValueWarning_Label.Visibility == Visibility.Visible)
                                 {
@@ -318,7 +309,7 @@ namespace OperatoerGUI
         }
 
         
-        public event PropertyChangedEventHandler PropertyChanged;
+        
 
         private void LowerLimit_TB_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -530,26 +521,26 @@ namespace OperatoerGUI
             GotLostFocus(ManualBaseLine_TB, "Input Baseline");
         }
 
-        private int count;
+        
         public void TimeLasted(object sender, EventArgs e)
         {
-            TimeElapsed = "";
-            int time = countUpTimer.TimeRemaining;
+            timeElapsed = "";
+            int time = countUpTimer.countedTime;
             int minutes = time / 60;
             int seconds = time % 60;
 
             
             if (minutes<=9)
             {
-                TimeElapsed += string.Join("","0");
+                timeElapsed += string.Join("","0");
             }
-            TimeElapsed += string.Join("",minutes);
-            TimeElapsed += string.Join("",":");
+            timeElapsed += string.Join("",minutes);
+            timeElapsed += string.Join("",":");
             if (seconds<=9)
             {
-                TimeElapsed += string.Join("","0");
+                timeElapsed += string.Join("","0");
             }
-            TimeElapsed += string.Join("",seconds);
+            timeElapsed += string.Join("",seconds);
 
 
             

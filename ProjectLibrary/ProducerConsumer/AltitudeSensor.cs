@@ -9,22 +9,20 @@ using System.Threading;
 
 namespace OperatoerLibrary.ProducerConsumer
 {
-    public class Producer : IProducer
+    public class AltitudeSensor : IAltitudeSensor
     {
         private readonly BlockingCollection<BreathingValuesDataContainer> _breathingData;
-        private const int sampletime = 33;
-        private string dataRead;
         private string data = "";
         private string datavalue = "";
         private string[] dataList = new string[1];
-        public double BreathingSamples = new double();
-        private BreathingValuesDataContainer datacontainer;
+        public double BreathingSamples = 0;
+        private BreathingValuesDataContainer dataContainer;
 
         /// <summary>
         /// Recieves the DataContainer from controller
         /// </summary>
         /// <param name="breathingData"></param>
-        public Producer(BlockingCollection<BreathingValuesDataContainer> breathingData)
+        public AltitudeSensor(BlockingCollection<BreathingValuesDataContainer> breathingData)
         {
             _breathingData = breathingData;
         }
@@ -59,9 +57,9 @@ namespace OperatoerLibrary.ProducerConsumer
                    var sample = decimal.Parse(datavalue, CultureInfo.InvariantCulture);
 
                    BreathingSamples = Convert.ToDouble(sample);
-                   datacontainer = new BreathingValuesDataContainer
+                   dataContainer = new BreathingValuesDataContainer
                        {BreathingSample = BreathingSamples};
-                   _breathingData.Add(datacontainer);
+                   _breathingData.Add(dataContainer);
                }
             }
             
