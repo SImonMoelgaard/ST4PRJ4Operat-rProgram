@@ -994,7 +994,7 @@
                    Grid.Row="10"
                    Grid.Column="1"     
                    Style="{StaticResource font_style}"
-                   Text="Adjust baseline"
+                   Text="Adjust Baseline"
                    FontSize="24"
                 
                        

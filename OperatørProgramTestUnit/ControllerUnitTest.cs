@@ -17,10 +17,10 @@ namespace OperatoerProgramTestUnit
     {
         private Controller _uut;
         private IBaseLineFilter fakeBaseLineFilter;
-        private Producer fakeProducer;
-        private UDPSender fakeUdpSender;
+        private IAltitudeSensor fakeProducer;
+        private IUDPSender fakeUdpSender;
         private BlockingCollection<BreathingValuesDataContainer> data;
-        private UDPSender udpsender;
+        private IUDPSender udpsender;
         [SetUp]
         public void Setup()
         {
@@ -29,7 +29,7 @@ namespace OperatoerProgramTestUnit
             
             fakeUdpSender = Substitute.For<UDPSender>();
             data = new BlockingCollection<BreathingValuesDataContainer>();
-            fakeProducer = Substitute.For<Producer>(data);
+            fakeProducer = Substitute.For<AltitudeSensor>(data);
             _uut = new Controller(data);
 
 
