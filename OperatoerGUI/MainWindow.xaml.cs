@@ -203,7 +203,7 @@ namespace OperatoerGUI
                                 if (AutoBaseLineWarning_L.Visibility == Visibility.Visible|| ManualBaseLineWarning_L.Visibility == Visibility.Visible || LimitValueWarning_Label.Visibility == Visibility.Visible)
                                 {
                                     count++;
-                                    if (count>=150)
+                                    if (count>=125)
                                     {
                                         AutoBaseLineWarning_L.Visibility = Visibility.Hidden;
                                         ManualBaseLineWarning_L.Visibility = Visibility.Hidden;
@@ -233,6 +233,10 @@ namespace OperatoerGUI
         }
 
 
+        /// <summary>
+        /// Sets the limit of x axis
+        /// </summary>
+        /// <param name="now"></param>
         private void SetAxisLimits(DateTime now)
         {
             AxisMax = now.Ticks + TimeSpan.FromSeconds(0).Ticks; // lets force the axis to be 0 second ahead
@@ -269,13 +273,13 @@ namespace OperatoerGUI
         }
 
 
+        
+       
         /// <summary>
-        /// Takes the two inputted numbers and adjusts
+        /// Starts measurement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-       
-
         private void Start_B_Click_1(object sender, RoutedEventArgs e)
         {
             IsReading = true;
@@ -288,6 +292,11 @@ namespace OperatoerGUI
             
         }
 
+        /// <summary>
+        /// Stops measurement
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Stop_B_Click_1(object sender, RoutedEventArgs e)
         {
             IsReading = false;
@@ -298,11 +307,21 @@ namespace OperatoerGUI
             Start_B_gray.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// Removes the current text if the standard text. If nothing is written, replaces with the standard text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UpperLimit_TB_GotFocus(object sender, RoutedEventArgs e)
         {
             GotLostFocus(UpperLimit_TB, "Upper limit");
         }
 
+        /// <summary>
+        /// Removes the current text if the standard text. If nothing is written, replaces with the standard text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UpperLimit_TB_LostFocus(object sender, RoutedEventArgs e)
         {
             GotLostFocus(UpperLimit_TB, "Upper limit");
@@ -310,17 +329,31 @@ namespace OperatoerGUI
 
         
         
-
+        /// <summary>
+        /// Removes the current text if the standard text. If nothing is written, replaces with the standard text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LowerLimit_TB_LostFocus(object sender, RoutedEventArgs e)
         {
             GotLostFocus(LowerLimit_TB, "Lower limit");
         }
 
+        /// <summary>
+        /// Removes the current text if the standard text. If nothing is written, replaces with the standard text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LowerLimit_TB_GotFocus(object sender, RoutedEventArgs e)
         {
             GotLostFocus(LowerLimit_TB, "Lower limit");
         }
 
+        /// <summary>
+        /// Selects the item in combobox and selects the correspondant number
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Select_B_Click(object sender, RoutedEventArgs e)
         {
             var selected = PatientGUI_cb.Text;
@@ -337,6 +370,12 @@ namespace OperatoerGUI
             PatientGUI_cb.Text = "";
         }
 
+
+        /// <summary>
+        /// Adjust baseline
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AdjustBaseLine_B_Click(object sender, RoutedEventArgs e)
         {
             baseLine = cr.AdjustBaseLine();
@@ -352,6 +391,11 @@ namespace OperatoerGUI
             // AdjustGatingValues();
         }
         
+        /// <summary>
+        /// Adjust limit values
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Adjust_Limit_B_Click(object sender, RoutedEventArgs e)
         {
             if (UpperLimit_TB.Text != "Upper limit" && LowerLimit_TB.Text != "Lower limit")
@@ -398,22 +442,47 @@ namespace OperatoerGUI
             }
         }
 
+        /// <summary>
+        /// Exits program
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Close_B_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
         }
 
+
+        /// <summary>
+        /// Adjusts  baseline manually
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AdjustBaseLinemanual_B_Click(object sender, RoutedEventArgs e)
         {
-            var sample = decimal.Parse(ManualBaseLine_TB.Text, CultureInfo.InvariantCulture);
-            baseLine = Convert.ToDouble(sample);
-            cr.SaveBaseLineValue(baseLine);
-            var formattedBaseLine = baseLine.ToString("0.000");
-            CurrentBaseline_TB.Text = formattedBaseLine;
-            ManualBaseLineWarning_L.Text = "Success";
-            ManualBaseLineWarning_L.Visibility = Visibility.Visible;
+            try
+            {
+                var sample = decimal.Parse(ManualBaseLine_TB.Text, CultureInfo.InvariantCulture);
+                baseLine = Convert.ToDouble(sample);
+                cr.SaveBaseLineValue(baseLine);
+                var formattedBaseLine = baseLine.ToString("0.000");
+                CurrentBaseline_TB.Text = formattedBaseLine;
+                ManualBaseLineWarning_L.Text = "Success";
+                ManualBaseLineWarning_L.Visibility = Visibility.Visible;
+            }
+            catch (InvalidOperationException)
+            {
+               
+                
+            }
+            
         }
 
+        /// <summary>
+        /// Converts time to treat from seconds to format xx:xx
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TimeToTreat_B_Click(object sender, RoutedEventArgs e)
         {
             
@@ -440,6 +509,10 @@ namespace OperatoerGUI
             countDownTimer.SetTime(time);
         }
 
+        /// <summary>
+        /// Lets the values be changed on the graph
+        /// </summary>
+        /// <param name="propertyName"></param>
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             if (PropertyChanged != null)
@@ -447,7 +520,11 @@ namespace OperatoerGUI
         }
 
 
-
+        /// <summary>
+        /// Removes the current text if the standard text. If nothing is written, replaces with the standard text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void GotLostFocus(TextBox a, string text)
         {
             if (a.Text==text)
@@ -461,16 +538,34 @@ namespace OperatoerGUI
 
         }
 
+        /// <summary>
+        /// Stops timer and measurement when timer expires
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnTimerExpired(object sender, EventArgs e)
         {
-            IsReading = false;
-            countUpTimer.Stop();
-            Start_B.Visibility = Visibility.Visible;
-            Stop_B.Visibility = Visibility.Hidden;
-            Stop_B_gray.Visibility = Visibility.Visible;
-            Start_B_gray.Visibility = Visibility.Hidden;
+            try
+            {IsReading = false;
+                countUpTimer.Stop();
+                Start_B.Visibility = Visibility.Visible;
+                Stop_B.Visibility = Visibility.Hidden;
+                Stop_B_gray.Visibility = Visibility.Visible;
+                Start_B_gray.Visibility = Visibility.Hidden;
+
+            }
+            catch (InvalidOperationException)
+            {
+                
+            }
+            
         }
 
+        /// <summary>
+        /// From seconds to minutes for the reamining time for treatment
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void OnTimerTick(object sender, EventArgs e)
         {
             timeRemaining = "";
@@ -501,27 +596,52 @@ namespace OperatoerGUI
 
         }
 
+        /// <summary>
+        /// Removes the current text if the standard text. If nothing is written, replaces with the standard text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TimeToTreat_TB_GotFocus(object sender, RoutedEventArgs e)
         {
             GotLostFocus(TimeToTreat_TB, "Seconds");
         }
 
+        /// <summary>
+        /// Removes the current text if the standard text. If nothing is written, replaces with the standard text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TimeToTreat_TB_LostFocus(object sender, RoutedEventArgs e)
         {
             GotLostFocus(TimeToTreat_TB, "Seconds");
         }
 
+        /// <summary>
+        /// Removes the current text if the standard text. If nothing is written, replaces with the standard text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ManualBaseLine_TB_LostFocus(object sender, RoutedEventArgs e)
         {
             GotLostFocus(ManualBaseLine_TB, "Input Baseline");
         }
 
+        /// <summary>
+        /// Removes the current text if the standard text. If nothing is written, replaces with the standard text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ManualBaseLine_TB_GotFocus(object sender, RoutedEventArgs e)
         {
             GotLostFocus(ManualBaseLine_TB, "Input Baseline");
         }
 
         
+        /// <summary>
+        /// From seconds to a string with time xx:xx
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void TimeLasted(object sender, EventArgs e)
         {
             timeElapsed = "";
