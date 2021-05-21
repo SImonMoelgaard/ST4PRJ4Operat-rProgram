@@ -89,7 +89,10 @@ namespace OperatoerLibrary.Filters
                 BaseLineAdjustList.RemoveAt(0);
             }
         }
-
+        /// <summary>
+        /// Saves the baseline
+        /// </summary>
+        /// <param name="baseLine"></param>
         public void SaveBaseLine(double baseLine)
         {
             baseLineValue = baseLine;

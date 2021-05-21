@@ -27,12 +27,21 @@ namespace OperatoerLibrary.Timer
             timer.AutoReset = true;  
         }
 
-        
+        /// <summary>
+        /// Sets the property RemainingTime
+        /// </summary>
+        /// <param name="time"></param>
         public void SetTime(double time)
         {
             RemainingTime = time;
         }
 
+        /// <summary>
+        /// Starts the timer if 12 points in a row is between the gatingvalues (= 480 ms)
+        /// </summary>
+        /// <param name="dataPoint"></param>
+        /// <param name="lowerGating"></param>
+        /// <param name="higherGating"></param>
         public void Start(double dataPoint, double lowerGating, double higherGating)
         {
             if (dataPoint>=lowerGating && dataPoint <= higherGating)
@@ -56,13 +65,20 @@ namespace OperatoerLibrary.Timer
             }
             
         }
-
+        /// <summary>
+        /// Expire event. 
+        /// </summary>
         private void Expire()
         {
             timer.Enabled = false;
             Expired?.Invoke(this, System.EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Counts down in increments of 25 ms if invoked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void OnTimerEvent(object sender, System.Timers.ElapsedEventArgs args)
         {
             

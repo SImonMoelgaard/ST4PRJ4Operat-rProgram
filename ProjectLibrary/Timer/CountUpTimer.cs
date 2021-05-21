@@ -19,15 +19,26 @@ namespace OperatoerLibrary.Timer
             timer.Interval = 1000; 
             timer.AutoReset = true;  
         }
+        /// <summary>
+        /// Starts the timer
+        /// </summary>
         public void Start()
         {
             timer.Enabled = true;
         }
 
+        /// <summary>
+        /// Stops the timer
+        /// </summary>
         public void Stop()
         {
             timer.Enabled = false;
         }
+        /// <summary>
+        /// Timer event. Counts up in increments of 1 second
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void OnTimerEvent(object sender, System.Timers.ElapsedEventArgs args)
         {
             

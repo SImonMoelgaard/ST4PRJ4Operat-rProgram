@@ -85,18 +85,32 @@ namespace OperatoerLibrary
             udpSender.SendGuiInfo(guiID);
         }
 
+        /// <summary>
+        /// Saves the gating area and returns the result
+        /// </summary>
+        /// <param name="lowerGating"></param>
+        /// <param name="higherGating"></param>
+        /// <returns></returns>
         public string SaveGatingArea(double lowerGating, double higherGating)
         {
             var result = gatingArea.SaveGatingArea(lowerGating, higherGating);
             return result;
         }
 
+        /// <summary>
+        /// Gets the gating area and returns them
+        /// </summary>
+        /// <returns></returns>
         public DTO_GatingValues GetGatingValue()
         {
             gatingValues = gatingArea.GetGatingValue();
             return gatingValues;
         }
 
+        /// <summary>
+        /// Saves the manual baseline value
+        /// </summary>
+        /// <param name="baseline"></param>
         public void SaveBaseLineValue(double baseline)
         {
             baseLineFilter.SaveBaseLine(baseline);

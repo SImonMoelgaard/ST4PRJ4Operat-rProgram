@@ -6,6 +6,14 @@ namespace OperatoerLibrary.Filters
     {
         public DTO_GatingValues gatingValue { get; set; }
         
+        /// <summary>
+        /// Saves gating Area
+        /// </summary>
+        /// <param name="lowerGating"></param>
+        /// <param name="higherGating"></param>
+        /// <returns>
+        ///Returns result
+        /// </returns>
         public string SaveGatingArea(double lowerGating, double higherGating)
         {
             gatingValue = new DTO_GatingValues(0, 0);
@@ -30,7 +38,10 @@ namespace OperatoerLibrary.Filters
 
             return "none";
         }
-
+        /// <summary>
+        /// Returns the latest gatingvalues
+        /// </summary>
+        /// <returns></returns>
         public DTO_GatingValues GetGatingValue()
         {
             return gatingValue;
